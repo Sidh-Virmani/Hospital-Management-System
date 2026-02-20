@@ -1,0 +1,43 @@
+Hey, I am writing some instructions on how you have to use and navigate for the project
+
+1. Clone the project      (Jump to instruction 4)
+2. If already cloned, before you start working, use the git pull command (need wifi connection for same)
+
+3. Once pulled/clone go to powershell (windows terminal) and check if venv is activated. If it is then start working
+4. Create virtual environment using  "python -m venv venv"
+5. Activate virutal environment using  "venv\Scripts\activate"
+
+
+
+How and what to do for work?
+
+Right now we are on the database designing phase.
+Step 2 will be using python, flask and connector to make backend and frontend and make them communicate
+
+1. We are going to make our database in src\01_schema.sql
+2. How to run and see the program:
+    i. Open your MySQL workbench
+    ii. Click on create local instance and put your password
+    iii. Click on file dropdown and select open SQL script 
+    iv. Click the lightning button to execute the SQL commands
+    v. But in 01_schema.sql we are only making the structure/architecture hence there are supposed to be no "select" commands
+    vi. Open SQL script of 02_debug.sql. In this file we can write any command we want to execute to check our structure correctness or output for our schema file
+    vii. Make sure to properly add comments the way I have done to help others catch up very easily. Make sure to use simple english words (my english is weak)
+
+
+How to upload your work?
+    Once you are done, do the following
+    1. Use git pull command again. If its successful go to step 5
+    2. If merge conflicts appear, click on resolve merge conflicts
+    3. If 2 people have done same work, just remove the less useful Once
+    4. If 2 people have done different work, just shift the code segment up or dropdown
+    5. If you want to stage all files do "git add ."
+    6. If you want to stage particular files only, replace "." with the filenames seperated by space
+    7. Write a msg to the team about the work you have done using "git commit -m "msgforteam""
+    8. Push your work using "git push"
+
+Will update once we are done with making our database.
+
+All the best.
+
+

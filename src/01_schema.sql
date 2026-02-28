@@ -11,3 +11,16 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     role ENUM('ADMIN', 'PATIENT', 'MEDICAL_STAFF', 'NON_MEDICAL_STAFF') NOT NULL
 );
+
+CREATE TABLE medical_staff(
+    staff_id INT PRIMARY KEY AUTO INCREMENT,
+    user_id INT NOT NULL,
+    staff_type ENUM("DOCTOR", "NURSE") NOT NULL,
+    department_id INT,
+
+    constraint fk_medical_staff_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+)

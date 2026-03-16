@@ -75,3 +75,36 @@ CREATE TABLE nurses(
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
+CREATE TABLE diagnoses (
+    diagnosis_id INT PRIMARY KEY,
+    record_id INT,
+    disease VARCHAR(100),
+    severity VARCHAR(50),
+
+    FOREIGN KEY (record_id) REFERENCES medical_records(record_id)
+);
+
+CREATE TABLE medical_records (
+    record_id INT PRIMARY KEY,
+    patient_id INT,
+    doctor_id INT,
+    visit_date DATE,
+    notes TEXT,
+
+    FOREIGN KEY (patient_id) REFERENCES patients(patient_id),
+    FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id)
+);
+
+CREATE TABLE patients (
+    patient_id INT PRIMARY KEY,
+    user_id INT NOT NULL,
+    name VARCHAR(100),
+    age INT,
+    gender VARCHAR(10),
+    phone VARCHAR(15),
+    address VARCHAR(255),
+    blood_group VARCHAR(5),
+
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);

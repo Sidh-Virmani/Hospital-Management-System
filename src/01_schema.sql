@@ -51,6 +51,19 @@ CREATE TABLE medical_staff(
         ON UPDATE CASCADE
 );
 
+CREATE TABLE non_medical_staff (
+    staff_id INT PRIMARY KEY,
+    user_id INT NOT NULL,
+    staff_type VARCHAR(255),
+    shift VARCHAR(255),
+
+    constraint fk_non_medical_staff_user
+        FOREIGN KEY (user_id) 
+        REFERENCES users(user_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
 CREATE TABLE doctors(
     doctor_id INT PRIMARY KEY AUTO_INCREMENT,
     staff_id INT NOT NULL UNIQUE,
@@ -72,6 +85,34 @@ CREATE TABLE nurses(
     constraint fk_nurse_staff
         FOREIGN KEY (staff_id)
         REFERENCES medical_staff(staff_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE departments (
+    department_id INT PRIMARY KEY,
+    department_name VARCHAR(255),
+    department_head_id INT NOT NULL
+
+    constraint fk_department_staff
+        FOREIGN KEY (department_head_id)
+        REFERENCES doctors(doctor_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE interns (
+    intern_id INT PRIMARY KEY,
+    staff_id INT,
+    mentor_doctor_id INT,
+
+    constraint fk_intern_staff
+        FOREIGN KEY (staff_id) REFERENCES medical_staff(staff_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    constraint fk_intern_doctor
+        FOREIGN KEY (mentor_doctor_id) REFERENCES doctors(doctor_id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );

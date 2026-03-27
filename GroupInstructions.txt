@@ -41,3 +41,30 @@ Will update once we are done with making our database.
 All the best.
 
 
+
+Update 2: For the people who have done the work up till now, here's the next tasks:
+
+1. Set up SQL workbench local host
+2. Click 'file' at top left corner and open all 4 files in sql_files one by once
+3. Run schema file (fix if it gives any error) 
+
+Task 1: Try adding some lines of data in the tables already existing. This will be done in the 03_sample_data file. I want everyone to extend the inserted data a bit.
+Everyone should have equal contribution at every step. For reference, i have added a tiny bit of data in 3-4 tables. This data is
+solely to check how our schema works and will also help spot any errors. 
+
+IMPORTANT: Be careful while inserting data, if you are adding a value in a table X which references value from table Y then you 
+would have to first put a value in table Y corresponding to it. And be careful of the constraints too.
+
+Now, to check if your inserted data is error free, simply run a few basic commands related to it and its table in 02_debug.sql file
+Again, i have put some commands there for reference of how i validated my inserted data. You can fuck around find out even more stuff
+
+Task 2: This is a tiny bit complicated so please follow the instructions in correct sequence, I have intentionally chosen this 
+sequence thinking it'll be beneficial
+
+Bohot zyada hai mai nahi likh raha. Meet pe bata dunga 
+
+
+
+
+
+

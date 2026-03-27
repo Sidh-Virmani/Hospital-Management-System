@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hospital Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .role-box {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            width: fit-content;
+        }
+
+        .section {
+            margin-top: 25px;
+        }
+
+        a.button {
+            display: inline-block;
+            margin: 8px 8px 8px 0;
+            padding: 10px 14px;
+            text-decoration: none;
+            background-color: #0077cc;
+            color: white;
+            border-radius: 6px;
+        }
+
+        a.button:hover {
+            background-color: #005fa3;
+        }
+
+        .small-link {
+            display: inline-block;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Hospital Management System</h1>
+
+    <!-- Show current role -->
+    <div class="role-box">
+        <strong>Current Role:</strong> {{ role }}
+    </div>
+
+    <!-- Temporary role selection buttons -->
+    <div class="section">
+        <h3>Select Role (Temporary for Testing)</h3>
+
+        <a class="button" href="{{ url_for('set_role', role='ADMIN') }}">Login as ADMIN</a>
+        <a class="button" href="{{ url_for('set_role', role='PATIENT') }}">Login as PATIENT</a>
+        <a class="button" href="{{ url_for('set_role', role='MEDICAL_STAFF') }}">Login as MEDICAL_STAFF</a>
+        <a class="button" href="{{ url_for('logout') }}">Reset to GUEST</a>
+    </div>
+
+    <!-- Buttons for the 5 backend query routes -->
+    <div class="section">
+        <h3>Available Actions</h3>
+
+        <a class="button" href="{{ url_for('show_doctors') }}">Show All Doctors</a>
+        <a class="button" href="{{ url_for('view_patients') }}">View All Patients</a>
+        <a class="button" href="{{ url_for('medical_history') }}">View Patient Medical History</a>
+        <a class="button" href="{{ url_for('patient_diagnoses') }}">View Patient Diagnoses</a>
+        <a class="button" href="{{ url_for('department_heads') }}">Show Department Heads</a>
+    </div>
+
+</body>
+</html>

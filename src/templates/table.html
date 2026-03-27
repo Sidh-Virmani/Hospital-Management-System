@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #999;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        a.button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 14px;
+            text-decoration: none;
+            background-color: #0077cc;
+            color: white;
+            border-radius: 6px;
+        }
+
+        a.button:hover {
+            background-color: #005fa3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>{{ title }}</h1>
+
+    {% if data and data|length > 0 %}
+        <table>
+            <thead>
+                <tr>
+                    <!-- Use keys of first row as column headings -->
+                    {% for column in data[0].keys() %}
+                        <th>{{ column }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Print each row -->
+                {% for row in data %}
+                    <tr>
+                        {% for value in row.values() %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No data found.</p>
+    {% endif %}
+
+    <a class="button" href="{{ url_for('home') }}">Back to Home</a>
+
+</body>
+</html>

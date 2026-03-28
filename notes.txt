@@ -1,0 +1,3 @@
+Please add any changes you're making here so its easier to keep track 
+
+1. Have created a wards and a wards_assigned table not given in ER diagram to convey the M:N relationship 

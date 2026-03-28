@@ -17,8 +17,19 @@ INSERT INTO medical_staff (user_id, staff_type) VALUES
 (3, 'NURSE');
 
 -- DOCTOR
-INSERT INTO doctors (staff_id, specialization) VALUES
-(1, 'Cardiology');
+INSERT INTO doctors (staff_id, specialization, availability_status) VALUES
+(1, 'Cardiology', 'AVAILABLE'),
+(2, 'Neurology', 'BUSY'),
+(3, 'Orthopedics', 'AVAILABLE'),
+(4, 'Pediatrics', 'ON LEAVE'),
+(5, 'Dermatology', 'AVAILABLE'),
+(6, 'Cardiology', 'BUSY'),
+(7, 'General Medicine', 'AVAILABLE'),
+(8, 'Radiology', 'OFF DUTY'),
+(9, 'Psychiatry', 'AVAILABLE'),
+(10, 'Cardiology', 'ON LEAVE'),
+(11, 'ENT', 'AVAILABLE'),
+(12, 'Ophthalmology', 'BUSY');
 
 -- NURSE
 INSERT INTO nurses (staff_id, ward_assigned) VALUES

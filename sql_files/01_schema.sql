@@ -79,14 +79,40 @@ CREATE TABLE doctors(
         ON UPDATE CASCADE
 );
 
+CREATE TABLE wards (
+    ward_id INT PRIMARY KEY AUTO_INCREMENT,
+    ward_name VARCHAR(100) NOT NULL UNIQUE,
+    ward_type ENUM('ICU', 'GENERAL', 'EMERGENCY', 'MATERNITY', 'SURGICAL')
+);
+
+
+
 CREATE TABLE nurses(
     nurse_id INT PRIMARY KEY AUTO_INCREMENT,
     staff_id INT NOT NULL UNIQUE,
-    ward_assigned VARCHAR(100),
 
     constraint fk_nurse_staff
         FOREIGN KEY (staff_id)
         REFERENCES medical_staff(staff_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE nurse_wards (
+    nurse_id INT,
+    ward_id INT,
+
+    PRIMARY KEY (nurse_id, ward_id),
+
+    CONSTRAINT fk_nurse_wards_nurse
+        FOREIGN KEY (nurse_id)
+        REFERENCES nurses(nurse_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_nurse_wards_ward
+        FOREIGN KEY (ward_id)
+        REFERENCES wards(ward_id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );

@@ -9,7 +9,9 @@ INSERT INTO users (username, password, role) VALUES
 ('nurse1', 'pass', 'MEDICAL_STAFF'),
 ('nurse2', 'pass', 'MEDICAL_STAFF'),
 ('nurse3', 'pass', 'MEDICAL_STAFF'),
-('patient1', 'pass', 'PATIENT');
+('patient1', 'pass', 'PATIENT'),
+('patient2', 'pass', 'PATIENT'),
+('patient3', 'pass', 'PATIENT');
 
 -- ADMINS
 INSERT INTO admins (user_id, admin_level) VALUES
@@ -30,7 +32,7 @@ INSERT INTO doctors (staff_id, specialization) VALUES
 (2, 'Neurology'),
 (3, 'Orthopedics');
 
---WARDS
+-- WARDS
 INSERT INTO wards (ward_name, ward_type) VALUES
 ('ICU Ward A', 'ICU'),
 ('General Ward A', 'GENERAL'),
@@ -49,26 +51,38 @@ INSERT INTO nurses (staff_id) VALUES
 
 -- NURSE_WARDS
 INSERT INTO nurse_wards (nurse_id, ward_id) VALUES
-(1,1), (1,2),
+(1,1), (1,2), (1, 3), (2, 4), (2, 5), (2, 6), (3, 7), (3, 8), (3, 9),
 (2,3),
 (3,4);
 
 -- DEPARTMENT
 INSERT INTO departments (department_name, department_head_id) VALUES
-('Cardiology', 1);
+('Cardiology', 1),
+('General Medicine', 2),
+('Orthopedics', 3);
 
 -- UPDATE staff department
 UPDATE medical_staff SET department_id = 1 WHERE staff_id = 1;
-UPDATE medical_staff SET department_id = 1 WHERE staff_id = 2;
+UPDATE medical_staff SET department_id = 2 WHERE staff_id = 2;
+UPDATE medical_staff SET department_id = 3 WHERE staff_id = 3;
+UPDATE medical_staff SET department_id = 1 WHERE staff_id = 4;
+UPDATE medical_staff SET department_id = 2 WHERE staff_id = 5;
+UPDATE medical_staff SET department_id = 3 WHERE staff_id = 6;
 
 -- PATIENT
 INSERT INTO patients (user_id, name, age, gender) VALUES
-(8, 'John Doe', 25, 'Male');
+(8, 'John Doe', 25, 'Male'),
+(9, 'Clary Fray', 20, 'Female'),
+(10, 'Jake Herondale', 22, 'Male');
 
 -- MEDICAL RECORD
 INSERT INTO medical_records (patient_id, doctor_id, visit_date, notes) VALUES
-(1, 1, '2025-03-27', 'Regular checkup');
+(1, 1, '2025-03-27', 'Regular checkup'),
+(2, 2, '2025-03-31', 'Sprained ankle'),
+(3, 2, '2025-03-31', 'Migraine evaluation');
 
 -- DIAGNOSIS
 INSERT INTO diagnoses (record_id, disease, severity) VALUES
-(1, 'Flu', 'Mild');
+(1, 'Flu', 'Mild'),
+(2, 'Ankle Sprain', 'Severe'),
+(3, 'Migraine', 'Severe');

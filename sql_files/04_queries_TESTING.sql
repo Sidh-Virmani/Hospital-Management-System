@@ -125,3 +125,89 @@ SELECT
     medicine_price as price,
     medicine_manufacturer as manufacturer
 FROM medicines;
+
+
+-- =========================================================
+-- QUERY 8
+-- UI Button: "Show All Appointments"
+-- Role allowed: ADMIN, MEDICAL_STAFF, PATIENT, DOCTOR
+-- Purpose: Display all appointments with their patient name, doctor specialization, date, time, and status.
+-- Note: Later in backend, this can also be filtered for one patient.
+-- =========================================================
+SELECT 
+    a.appointment_id as id,
+    p.name as patient_name,
+    d.specialization as doctor_specialization,
+    d.doctor_id as doctor_id,
+    a.appointment_date as date,
+    a.appointment_time as time,
+    a.appointment_status as status
+FROM appointments a
+LEFT JOIN patients p 
+    ON a.patient_id = p.patient_id
+LEFT JOIN doctors d 
+    ON a.doctor_id = d.doctor_id;
+
+
+-- =========================================================
+-- QUERY 9
+-- UI Button: "Show All Prescriptions"
+-- Role allowed: ADMIN, MEDICAL_STAFF, PATIENT, DOCTOR
+-- Purpose: Display all prescriptions with their patient name, doctor specialization, date, time, and status.
+-- =========================================================
+SELECT 
+    p.prescription_id as id,
+    pat.name as patient_name,
+    doc.doctor_id as doctor_id,
+    mr.visit_date as date,
+    m.medicine_name as medicine_name,
+    p.frequency as frequency,
+    p.duration as duration
+FROM prescriptions p
+LEFT JOIN medical_records mr
+    ON p.record_id = mr.record_id
+LEFT JOIN patients pat
+    ON mr.patient_id = pat.patient_id
+LEFT JOIN doctors doc
+    ON mr.doctor_id = doc.doctor_id
+LEFT JOIN medicines m
+    ON p.medicine_id = m.medicine_id;
+
+-- =========================================================
+-- QUERY 10
+-- UI Button: Show All Medical Records
+-- Role allowed: ADMIN, MEDICAL_STAFF, PATIENT, DOCTOR
+-- Purpose: Display all medical records with their patient name, doctor specialization, date, time, and status.
+-- =========================================================
+SELECT 
+    mr.record_id as id,
+    p.name as patient_name,
+    doc.doctor_id as doctor_id,
+    mr.visit_date as date,
+    mr.notes as notes
+FROM medical_records mr
+LEFT JOIN patients p 
+    ON mr.patient_id = p.patient_id
+LEFT JOIN doctors doc 
+    ON mr.doctor_id = doc.doctor_id;
+
+-- =========================================================
+-- QUERY 11
+-- UI Button: Show All Diagnoses
+-- Role allowed: ADMIN, MEDICAL_STAFF, PATIENT, DOCTOR
+-- Purpose: Display all diagnoses with their patient name, doctor specialization, date, time, and status.
+-- =========================================================
+SELECT 
+    d.diagnosis_id as id,
+    p.name as patient_name,
+    doc.doctor_id as doctor_id,
+    mr.visit_date as date,
+    d.disease as disease,
+    d.severity as severity
+FROM diagnoses d
+LEFT JOIN medical_records mr
+    ON d.record_id = mr.record_id
+LEFT JOIN patients p 
+    ON mr.patient_id = p.patient_id
+LEFT JOIN doctors doc 
+    ON mr.doctor_id = doc.doctor_id;

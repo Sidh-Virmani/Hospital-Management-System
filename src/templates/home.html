@@ -64,7 +64,7 @@
         <a class="button" href="{{ url_for('logout') }}">Reset to GUEST</a>
     </div>
 
-    <!-- Buttons for the 6 backend query routes -->
+    <!-- Buttons for the backend query routes -->
     <div class="section">
         <h3>Available Actions</h3>
 
@@ -75,6 +75,11 @@
         <a class="button" href="{{ url_for('department_heads') }}">Show Department Heads</a>
         <a class="button" href="{{ url_for('show_all_staff') }}">Show All Staff</a>
         <a class="button" href="{{ url_for('show_all_medicines') }}">Show All Medicines</a>
+        <a class="button" href="{{ url_for('show_all_appointments') }}">Show All Appointments</a>
+
+        <a class="button" href="{{ url_for('show_all_prescriptions') }}">Show All Prescriptions</a>
+        <a class="button" href="{{ url_for('show_all_medical_records') }}">Show All Medical Records</a>
+        <a class="button" href="{{ url_for('show_all_diagnoses') }}">Show All Diagnoses</a>
     </div>
 
 </body>

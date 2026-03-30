@@ -284,6 +284,145 @@ def show_all_medicines():
         data=data
     )
 
+# =========================================================
+# QUERY 8
+# UI Button: Show All Appointments
+# Role allowed: ADMIN, MEDICAL_STAFF, PATIENT, DOCTOR
+# =========================================================
+@app.route("/show_all_appointments")
+def show_all_appointments():
+    if session.get("role") not in ["ADMIN", "MEDICAL_STAFF", "PATIENT", "DOCTOR"]:
+        return "Access Denied: Only ADMIN, MEDICAL_STAFF, PATIENT, or DOCTOR can view all appointments."
+
+    query = """
+    SELECT 
+        a.appointment_id as id,
+        p.name as patient_name,
+        d.specialization as doctor_specialization,
+        d.doctor_id as doctor_id,
+        a.appointment_date as date,
+        a.appointment_time as time,
+        a.appointment_status as status
+    FROM appointments a
+    LEFT JOIN patients p
+        ON a.patient_id = p.patient_id
+    LEFT JOIN doctors d
+        ON a.doctor_id = d.doctor_id;
+    """
+
+    data = run_select_query(query)
+
+    return render_template(
+        "table.html",
+        title="All Appointments",
+        data=data
+    )
+
+# =========================================================
+# QUERY 9
+# UI Button: Show All Prescriptions
+# Role allowed: ADMIN, MEDICAL_STAFF, PATIENT, DOCTOR
+# =========================================================
+@app.route("/show_all_prescriptions")
+def show_all_prescriptions():
+    if session.get("role") not in ["ADMIN", "MEDICAL_STAFF", "PATIENT", "DOCTOR"]:
+        return "Access Denied: Only ADMIN, MEDICAL_STAFF, PATIENT, or DOCTOR can view all prescriptions."
+
+    query = """
+    SELECT 
+        p.prescription_id as id,
+        pat.name as patient_name,
+        doc.doctor_id as doctor_id,
+        mr.visit_date as date,
+        m.medicine_name as medicine_name,
+        p.frequency as frequency,
+        p.duration as duration
+    FROM prescriptions p
+    LEFT JOIN medical_records mr
+        ON p.record_id = mr.record_id
+    LEFT JOIN patients pat
+        ON mr.patient_id = pat.patient_id
+    LEFT JOIN doctors doc
+        ON mr.doctor_id = doc.doctor_id
+    LEFT JOIN medicines m
+        ON p.medicine_id = m.medicine_id;
+    """
+
+    data = run_select_query(query)
+
+    return render_template(
+        "table.html",
+        title="All Prescriptions",
+        data=data
+    )  
+
+# =========================================================
+# QUERY 10
+# UI Button: Show All Medical Records
+# Role allowed: ADMIN, MEDICAL_STAFF, PATIENT, DOCTOR
+# =========================================================
+@app.route("/show_all_medical_records")
+def show_all_medical_records():
+    if session.get("role") not in ["ADMIN", "MEDICAL_STAFF", "PATIENT", "DOCTOR"]:
+        return "Access Denied: Only ADMIN, MEDICAL_STAFF, PATIENT, or DOCTOR can view all medical records."
+
+    query = """
+    SELECT 
+        mr.record_id as id,
+        p.name as patient_name,
+        d.doctor_id as doctor_id,
+        mr.visit_date as date,
+        mr.notes as notes
+    FROM medical_records mr
+    LEFT JOIN patients p
+        ON mr.patient_id = p.patient_id
+    LEFT JOIN doctors d
+        ON mr.doctor_id = d.doctor_id;
+    """
+
+    data = run_select_query(query)
+
+    return render_template(
+        "table.html",
+        title="All Medical Records",
+        data=data
+    )  
+
+# =========================================================
+# QUERY 11
+# UI Button: Show All Diagnoses
+# Role allowed: ADMIN, MEDICAL_STAFF, PATIENT, DOCTOR
+# =========================================================
+@app.route("/show_all_diagnoses")
+def show_all_diagnoses():
+    if session.get("role") not in ["ADMIN", "MEDICAL_STAFF", "PATIENT", "DOCTOR"]:
+        return "Access Denied: Only ADMIN, MEDICAL_STAFF, PATIENT, or DOCTOR can view all diagnoses."
+
+    query = """
+    SELECT 
+        d.diagnosis_id as id,
+        p.name as patient_name,
+        doc.doctor_id as doctor_id,
+        mr.visit_date as date,
+        d.disease as disease,
+        d.severity as severity
+    FROM diagnoses d
+    LEFT JOIN medical_records mr
+        ON d.record_id = mr.record_id
+    LEFT JOIN patients p 
+        ON mr.patient_id = p.patient_id
+    LEFT JOIN doctors doc 
+        ON mr.doctor_id = doc.doctor_id;
+    """
+
+    data = run_select_query(query)
+
+    return render_template(
+        "table.html",
+        title="All Diagnoses",
+        data=data
+    )  
+
 # ---------------------------------------------------------
 # Run the Flask app
 # debug=True means code changes auto-refresh while developing

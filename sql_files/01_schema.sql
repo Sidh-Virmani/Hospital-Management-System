@@ -206,3 +206,14 @@ FOREIGN KEY (department_id)
 REFERENCES departments(department_id)
 ON DELETE SET NULL
 ON UPDATE CASCADE;
+
+
+-- medicines table
+
+CREATE TABLE medicines (
+    medicine_id INT PRIMARY KEY AUTO_INCREMENT,
+    medicine_name VARCHAR(100) NOT NULL,
+    medicine_stock INT NOT NULL,
+    medicine_price INT NOT NULL,
+    medicine_manufacturer VARCHAR(100) NOT NULL
+);

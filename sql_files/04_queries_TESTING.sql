@@ -92,3 +92,36 @@ SELECT
 FROM departments dep
 LEFT JOIN doctors d
     ON dep.department_head_id = d.doctor_id;
+
+
+-- =========================================================
+-- QUERY 6
+-- UI Button: "Show All Staff"
+-- Role using it: Admin
+-- Purpose: Display all staff members with their role and department.
+-- =========================================================
+SELECT 
+    ms.staff_id,
+    u.username,
+    ms.staff_type as designation,
+    dep.department_name as department
+FROM (medical_staff ms
+LEFT JOIN departments dep 
+    ON ms.department_id = dep.department_id)
+LEFT JOIN users u 
+    ON ms.user_id = u.user_id;
+
+
+-- =========================================================
+-- QUERY 7
+-- UI Button: "Show All Medicines"
+-- Role allowed: ADMIN, MEDICAL_STAFF, PATIENT, DOCTOR
+-- Purpose: Display all medicines with their stock, price, and manufacturer.
+-- =========================================================
+SELECT 
+    medicine_id as id,
+    medicine_name as name,
+    medicine_stock as stock,
+    medicine_price as price,
+    medicine_manufacturer as manufacturer
+FROM medicines;

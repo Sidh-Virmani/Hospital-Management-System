@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Hospital Management System</title>
     <style>
@@ -43,6 +44,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <h1>Hospital Management System</h1>
@@ -62,7 +64,7 @@
         <a class="button" href="{{ url_for('logout') }}">Reset to GUEST</a>
     </div>
 
-    <!-- Buttons for the 5 backend query routes -->
+    <!-- Buttons for the 6 backend query routes -->
     <div class="section">
         <h3>Available Actions</h3>
 
@@ -71,7 +73,10 @@
         <a class="button" href="{{ url_for('medical_history') }}">View Patient Medical History</a>
         <a class="button" href="{{ url_for('patient_diagnoses') }}">View Patient Diagnoses</a>
         <a class="button" href="{{ url_for('department_heads') }}">Show Department Heads</a>
+        <a class="button" href="{{ url_for('show_all_staff') }}">Show All Staff</a>
+        <a class="button" href="{{ url_for('show_all_medicines') }}">Show All Medicines</a>
     </div>
 
 </body>
+
 </html>

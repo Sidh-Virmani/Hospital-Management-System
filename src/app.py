@@ -225,6 +225,64 @@ def department_heads():
         data=data
     )
 
+# =========================================================
+# QUERY 6
+# UI Button: Show All Staff
+# Role allowed: ADMIN
+# =========================================================
+@app.route("/show_all_staff")
+def show_all_staff():
+    if session.get("role") != "ADMIN":
+        return "Access Denied: Only ADMIN can view all staff."
+
+    query = """
+    SELECT 
+        ms.staff_id,
+        u.username,
+        ms.staff_type as designation,
+        dep.department_name as department
+    FROM medical_staff ms
+    LEFT JOIN departments dep
+        ON ms.department_id = dep.department_id
+    LEFT JOIN users u
+        ON ms.user_id = u.user_id;
+    """
+
+    data = run_select_query(query)
+
+    return render_template(
+        "table.html",
+        title="All Staff",
+        data=data
+    )
+
+#=========================================================
+# QUERY 7
+# UI Button: Show All Medicines
+# Role allowed: ADMIN, MEDICAL_STAFF, PATIENT, DOCTOR
+# =========================================================
+@app.route("/show_all_medicines")
+def show_all_medicines():
+    if session.get("role") not in ["ADMIN", "MEDICAL_STAFF", "PATIENT", "DOCTOR"]:
+        return "Access Denied: Only ADMIN, MEDICAL_STAFF, PATIENT, or DOCTOR can view all medicines."
+
+    query = """
+    SELECT 
+        medicine_id as id,
+        medicine_name as name,
+        medicine_stock as stock,
+        medicine_price as price,
+        medicine_manufacturer as manufacturer
+    FROM medicines;
+    """
+
+    data = run_select_query(query)
+
+    return render_template(
+        "table.html",
+        title="All Medicines",
+        data=data
+    )
 
 # ---------------------------------------------------------
 # Run the Flask app

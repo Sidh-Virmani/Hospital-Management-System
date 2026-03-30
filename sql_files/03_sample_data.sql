@@ -86,3 +86,16 @@ INSERT INTO diagnoses (record_id, disease, severity) VALUES
 (1, 'Flu', 'Mild'),
 (2, 'Ankle Sprain', 'Severe'),
 (3, 'Migraine', 'Severe');
+
+-- medicines
+INSERT INTO medicines (medicine_name, medicine_stock, medicine_price, medicine_manufacturer) VALUES
+('Paracetamol 500mg', 1500, 25, 'PharmaCorp Inc.'),
+('Amoxicillin 250mg', 800, 150, 'HealthMeds LLC'),
+('Ibuprofen 400mg', 1200, 55, 'Wellness Pharma'),
+('Cetirizine 10mg', 600, 42, 'AllergyCare Ltd.'),
+('Omeprazole 20mg', 450, 125, 'GastroMed Co.'),
+('Metformin 500mg', 2000, 89, 'DiabeticCare Inc.'),
+('Aspirin 81mg', 900, 30, 'CardioHealth Pharma'),
+('Atorvastatin 40mg', 550, 220, 'CholesterolMeds Corp.'),
+('Azithromycin 250mg', 300, 185, 'HealthMeds LLC'),
+('Vitamin C 1000mg', 2500, 60, 'NutriLife Supplements');

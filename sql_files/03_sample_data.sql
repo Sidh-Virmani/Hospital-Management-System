@@ -99,3 +99,20 @@ INSERT INTO medicines (medicine_name, medicine_stock, medicine_price, medicine_m
 ('Atorvastatin 40mg', 550, 220, 'CholesterolMeds Corp.'),
 ('Azithromycin 250mg', 300, 185, 'HealthMeds LLC'),
 ('Vitamin C 1000mg', 2500, 60, 'NutriLife Supplements');
+
+-- prescriptions
+INSERT INTO prescriptions (record_id, medicine_id, frequency, duration) VALUES
+(1, 1, '3 times a day', '5 days'),
+(2, 2, '2 times a day', '7 days'),
+(3, 3, '3 times a day', '5 days');
+
+-- APPOINTMENTS
+INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, appointment_status) VALUES
+(1, 1, '2026-04-01', '09:00:00', 'CONFIRMED'),
+(2, 2, '2026-04-01', '10:30:00', 'CONFIRMED'),
+(3, 1, '2026-04-02', '14:00:00', 'PENDING'),
+(1, 3, '2026-04-03', '11:15:00', 'COMPLETED'),
+(2, 2, '2026-04-04', '09:45:00', 'CANCELLED'),
+(3, 3, '2026-04-05', '16:00:00', 'CONFIRMED'),
+(1, 1, '2026-04-06', '13:30:00', 'PENDING');
+

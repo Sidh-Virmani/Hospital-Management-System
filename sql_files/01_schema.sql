@@ -217,3 +217,46 @@ CREATE TABLE medicines (
     medicine_price INT NOT NULL,
     medicine_manufacturer VARCHAR(100) NOT NULL
 );
+
+-- prescriptions table
+
+CREATE TABLE prescriptions (
+    prescription_id INT PRIMARY KEY AUTO_INCREMENT,
+    record_id INT NOT NULL,
+    medicine_id INT NOT NULL,
+    frequency VARCHAR(100) NOT NULL,
+    duration VARCHAR(100) NOT NULL,
+
+    CONSTRAINT fk_prescription_record
+        FOREIGN KEY (record_id)
+        REFERENCES medical_records(record_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_prescription_medicine
+        FOREIGN KEY (medicine_id)
+        REFERENCES medicines(medicine_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE appointments (
+    appointment_id INT PRIMARY KEY AUTO_INCREMENT,
+    patient_id INT NOT NULL,
+    doctor_id INT NOT NULL,
+    appointment_date DATE NOT NULL,
+    appointment_time TIME NOT NULL,
+    appointment_status ENUM('PENDING', 'CONFIRMED', 'CANCELLED', 'COMPLETED') DEFAULT 'PENDING' NOT NULL,
+
+    CONSTRAINT fk_appointment_patient
+        FOREIGN KEY (patient_id)
+        REFERENCES patients(patient_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_appointment_doctor
+        FOREIGN KEY (doctor_id)
+        REFERENCES doctors(doctor_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);  

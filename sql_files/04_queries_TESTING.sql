@@ -192,25 +192,14 @@ LEFT JOIN doctors doc
     ON mr.doctor_id = doc.doctor_id;
 
 -- =========================================================
--- QUERY 11
--- UI Button: Show All Diagnoses
+-- QUERY 11 (only for debugging purposes)
+-- UI Button: Show All Users
 -- Role allowed: ADMIN, MEDICAL_STAFF, PATIENT, DOCTOR
--- Purpose: Display all diagnoses with their patient name, doctor specialization, date, time, and status.
+-- Purpose: Display all data of all users.
 -- =========================================================
 SELECT 
-    d.diagnosis_id as id,
-    p.name as patient_name,
-    doc.doctor_id as doctor_id,
-    mr.visit_date as date,
-    d.disease as disease,
-    d.severity as severity
-FROM diagnoses d
-LEFT JOIN medical_records mr
-    ON d.record_id = mr.record_id
-LEFT JOIN patients p 
-    ON mr.patient_id = p.patient_id
-LEFT JOIN doctors doc 
-    ON mr.doctor_id = doc.doctor_id;
+    *
+FROM users;
 
 -- =========================================================
 -- QUERY 12

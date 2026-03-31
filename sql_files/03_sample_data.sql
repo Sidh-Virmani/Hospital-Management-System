@@ -6,12 +6,14 @@ INSERT INTO users (username, password, role) VALUES
 ('doc1', 'pass', 'MEDICAL_STAFF'),
 ('doc2', 'pass', 'MEDICAL_STAFF'),
 ('doc3', 'pass', 'MEDICAL_STAFF'),
+('doc4', 'pass', 'MEDICAL_STAFF'),
 ('nurse1', 'pass', 'MEDICAL_STAFF'),
 ('nurse2', 'pass', 'MEDICAL_STAFF'),
 ('nurse3', 'pass', 'MEDICAL_STAFF'),
 ('patient1', 'pass', 'PATIENT'),
 ('patient2', 'pass', 'PATIENT'),
-('patient3', 'pass', 'PATIENT');
+('patient3', 'pass', 'PATIENT'),
+('patient4', 'pass', 'PATIENT');
 
 -- ADMINS
 INSERT INTO admins (user_id, admin_level) VALUES
@@ -22,15 +24,17 @@ INSERT INTO medical_staff (user_id, staff_type) VALUES
 (2, 'DOCTOR'),
 (3, 'DOCTOR'),
 (4, 'DOCTOR'),
-(5, 'NURSE'),
+(5, 'DOCTOR'),
 (6, 'NURSE'),
-(7, 'NURSE');
+(7, 'NURSE'),
+(8, 'NURSE');
 
 -- DOCTOR
 INSERT INTO doctors (staff_id, specialization) VALUES
 (1, 'Cardiology'),
 (2, 'Neurology'),
-(3, 'Orthopedics');
+(3, 'Orthopedics'),
+(4, 'Pediatrics');
 
 -- WARDS
 INSERT INTO wards (ward_name, ward_type) VALUES
@@ -47,7 +51,7 @@ INSERT INTO wards (ward_name, ward_type) VALUES
 
 -- NURSES
 INSERT INTO nurses (staff_id) VALUES
-(4), (5), (6);
+(5), (6), (7);
 
 -- NURSE_WARDS
 INSERT INTO nurse_wards (nurse_id, ward_id) VALUES
@@ -59,33 +63,38 @@ INSERT INTO nurse_wards (nurse_id, ward_id) VALUES
 INSERT INTO departments (department_name, department_head_id) VALUES
 ('Cardiology', 1),
 ('General Medicine', 2),
-('Orthopedics', 3);
+('Orthopedics', 3),
+('Surgery', 4);
 
 -- UPDATE staff department
 UPDATE medical_staff SET department_id = 1 WHERE staff_id = 1;
 UPDATE medical_staff SET department_id = 2 WHERE staff_id = 2;
 UPDATE medical_staff SET department_id = 3 WHERE staff_id = 3;
+UPDATE medical_staff SET department_id = 4 WHERE staff_id = 4;
 UPDATE medical_staff SET department_id = 1 WHERE staff_id = 4;
 UPDATE medical_staff SET department_id = 2 WHERE staff_id = 5;
 UPDATE medical_staff SET department_id = 3 WHERE staff_id = 6;
 
 -- PATIENT
 INSERT INTO patients (user_id, name, age, gender) VALUES
-(8, 'John Doe', 25, 'Male'),
-(9, 'Clary Fray', 20, 'Female'),
-(10, 'Jake Herondale', 22, 'Male');
+(9, 'John Doe', 25, 'Male'),
+(10, 'Clary Fray', 20, 'Female'),
+(12, 'Jake Herondale', 22, 'Male'),
+(11, 'Abc', 5, 'Female');
 
 -- MEDICAL RECORD
 INSERT INTO medical_records (patient_id, doctor_id, visit_date, notes) VALUES
 (1, 1, '2025-03-27', 'Regular checkup'),
 (2, 2, '2025-03-31', 'Sprained ankle'),
-(3, 2, '2025-03-31', 'Migraine evaluation');
+(3, 2, '2025-03-31', 'Migraine evaluation'),
+(4, 4, '2026-02-25', 'Stomach ache');
 
 -- DIAGNOSIS
 INSERT INTO diagnoses (record_id, disease, severity) VALUES
 (1, 'Flu', 'Mild'),
 (2, 'Ankle Sprain', 'Severe'),
-(3, 'Migraine', 'Severe');
+(3, 'Migraine', 'Severe'),
+(4, 'Food poisoning', 'Mild');
 
 -- medicines
 INSERT INTO medicines (medicine_name, medicine_stock, medicine_price, medicine_manufacturer) VALUES
@@ -114,5 +123,6 @@ INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_t
 (1, 3, '2026-04-03', '11:15:00', 'COMPLETED'),
 (2, 2, '2026-04-04', '09:45:00', 'CANCELLED'),
 (3, 3, '2026-04-05', '16:00:00', 'CONFIRMED'),
-(1, 1, '2026-04-06', '13:30:00', 'PENDING');
+(1, 1, '2026-04-06', '13:30:00', 'PENDING'),
+(4, 4, '2026-02-25', '14:00:00', 'COMPLETED');
 

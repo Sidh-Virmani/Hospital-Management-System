@@ -13,11 +13,21 @@ INSERT INTO users (username, password, role) VALUES
 ('patient1', 'pass', 'PATIENT'),
 ('patient2', 'pass', 'PATIENT'),
 ('patient3', 'pass', 'PATIENT'),
-('patient4', 'pass', 'PATIENT');
+('patient4', 'pass', 'PATIENT'),
+('admin2', 'pass', 'ADMIN'),
+('admin3', 'pass', 'ADMIN'),
+('admin4', 'pass', 'ADMIN'),
+('admin5', 'pass', 'ADMIN'),
+('admin6', 'pass', 'ADMIN');
 
 -- ADMINS
 INSERT INTO admins (user_id, admin_level) VALUES
-(1, 'SUPER');
+(1, 'SUPER'),
+(13, 'NORMAL'),
+(14, 'NORMAL'),
+(15, 'NORMAL'),
+(16, 'NORMAL'),
+(17, 'NORMAL');
 
 -- MEDICAL STAFF
 INSERT INTO medical_staff (user_id, staff_type) VALUES
@@ -27,7 +37,12 @@ INSERT INTO medical_staff (user_id, staff_type) VALUES
 (5, 'DOCTOR'),
 (6, 'NURSE'),
 (7, 'NURSE'),
-(8, 'NURSE');
+(8, 'NURSE'),
+(9, 'NURSE'),
+(10, 'NURSE'),
+(11, 'NURSE'),
+(12, 'NURSE'),
+(1, 'NURSE');
 
 -- DOCTOR
 INSERT INTO doctors (staff_id, specialization) VALUES
@@ -51,13 +66,18 @@ INSERT INTO wards (ward_name, ward_type) VALUES
 
 -- NURSES
 INSERT INTO nurses (staff_id) VALUES
-(5), (6), (7);
+(5), (6), (7), (8), (9), (10), (11), (12);
 
 -- NURSE_WARDS
 INSERT INTO nurse_wards (nurse_id, ward_id) VALUES
 (1,1), (1,2), (1, 3), (2, 4), (2, 5), (2, 6), (3, 7), (3, 8), (3, 9),
 (2,3),
-(3,4);
+(3,4),
+(4, 1),
+(4, 2),
+(5, 3),
+(6, 4),
+(7, 5);
 
 -- DEPARTMENT
 INSERT INTO departments (department_name, department_head_id) VALUES
@@ -113,7 +133,12 @@ INSERT INTO medicines (medicine_name, medicine_stock, medicine_price, medicine_m
 INSERT INTO prescriptions (record_id, medicine_id, frequency, duration) VALUES
 (1, 1, '3 times a day', '5 days'),
 (2, 2, '2 times a day', '7 days'),
-(3, 3, '3 times a day', '5 days');
+(3, 3, '3 times a day', '5 days'),
+(4, 4, '1 time a day', '3 days'),
+(2, 5, '2 times a day', '10 days'),
+(3, 6, '1 time a day', '15 days'),
+(1, 7, '1 time a day', '7 days'),
+(4, 8, '2 times a day', '5 days');
 
 -- APPOINTMENTS
 INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, appointment_status) VALUES

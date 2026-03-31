@@ -510,6 +510,158 @@ def show_ward_details():
         data=data
     ) 
 
+
+# =========================================================
+# QUERY 13
+# UI Button: Upcoming Appointments
+# Role allowed: ADMIN, MEDICAL_STAFF, NON_MEDICAL_STAFF
+# =========================================================
+
+@app.route("/show_upcoming_appointments")
+def show_upcoming_appointments():
+    if session.get("role") not in ["ADMIN", "MEDICAL_STAFF",  "NON_MEDICAL_STAFF"]:
+        return "Access Denied: Only ADMIN, MEDICAL_STAFF or NON_MEDICAL_STAFF can view appointment details."
+
+    query = """
+    select patient_id, doctor_id, appointment_date, appointment_time 
+from appointments 
+where (appointment_date > curdate() or (appointment_date = curdate() and appointment_time >= curtime()) )
+and appointment_status != 'CANCELLED'
+order by appointment_date, appointment_time;
+
+    """
+
+    data = run_select_query(query)
+
+    return render_template(
+        "table.html",
+        title="Upcoming Appointments",
+        data=data
+    ) 
+
+# =========================================================
+# QUERY 14
+# UI Button: Low Medicine Stock
+# Role allowed: ADMIN, NON_MEDICAL_STAFF
+# =========================================================
+
+@app.route("/low_medicine_stock")
+def low_medicine_stock():
+    if session.get("role") not in ["ADMIN",  "NON_MEDICAL_STAFF"]:
+        return "Access Denied: Only ADMIN, NON_MEDICAL_STAFF can view medicine details."
+
+    query = """   
+SELECT * FROM medicines
+WHERE medicine_stock < 100;
+    """
+
+    data = run_select_query(query)
+
+    return render_template(
+        "table.html",
+        title="Low Medicine Stock",
+        data=data
+    ) 
+
+# =========================================================
+# QUERY 15
+# UI Button: Available Doctors
+# Role allowed: ADMIN, MEDICAL_STAFF, NON_MEDICAL_STAFF, PATIENT, GUEST
+# =========================================================
+
+
+@app.route("/available_doctors")
+def available_doctors():
+
+    query = """
+    SELECT 
+        d.doctor_id,
+        u.username AS doctor_name,
+        d.specialization,
+        d.availability_status,
+        dep.department_name
+    FROM doctors d
+    JOIN medical_staff ms
+        ON d.staff_id = ms.staff_id
+    JOIN users u
+        ON ms.user_id = u.user_id
+    LEFT JOIN departments dep
+        ON ms.department_id = dep.department_id
+    WHERE d.availability_status = 'AVAILABLE'
+    ORDER BY dep.department_name;
+    """
+
+    data = run_select_query(query)
+
+    return render_template(
+        "table.html",
+        title="Available Doctors",
+        data=data
+    )
+
+# =========================================================
+# QUERY 16
+# UI Button: Patient Appointment Summary
+# Role allowed: ADMIN, MEDICAL STAFF, NON MEDICAL STAFF
+# =========================================================
+
+@app.route("/patient_appointment_summary")
+def patient_appointment_summary():
+
+    if session.get("role") not in ["ADMIN",  "NON_MEDICAL_STAFF", "MEDICAL_STAFF"]:
+        return "Access Denied: Only ADMIN, NON_MEDICAL_STAFF or MEDICAL_STAFF can view medicine details."
+
+
+    query = """
+       SELECT 
+    p.patient_id,
+    p.name,
+
+    COUNT(
+    CASE 
+        WHEN a.appointment_status = 'COMPLETED' 
+        THEN 1 
+    END
+) AS total_completed_appointments,
+
+    CASE 
+        WHEN MIN(
+            CASE 
+                WHEN (a.appointment_date > CURDATE() 
+                      OR (a.appointment_date = CURDATE() AND a.appointment_time >= CURTIME()))
+                THEN CONCAT(a.appointment_date, ' ', a.appointment_time)
+                ELSE NULL
+            END
+        ) IS NOT NULL 
+        THEN 'YES'
+        ELSE 'NO'
+    END AS has_upcoming_appointment,
+
+    MIN(
+        CASE 
+            WHEN (a.appointment_date > CURDATE() 
+                  OR (a.appointment_date = CURDATE() AND a.appointment_time >= CURTIME()))
+            THEN CONCAT(a.appointment_date, ' ', a.appointment_time)
+            ELSE NULL
+        END
+    ) AS next_appointment
+
+FROM patients p
+LEFT JOIN appointments a 
+    ON p.patient_id = a.patient_id
+
+GROUP BY p.patient_id, p.name
+ORDER BY p.name;
+    """
+
+    data = run_select_query(query)
+
+    return render_template(
+        "table.html",
+        title="Patient Appointment Summary",
+        data=data
+    )
+
 # ---------------------------------------------------------
 # Run the Flask app
 # debug=True means code changes auto-refresh while developing

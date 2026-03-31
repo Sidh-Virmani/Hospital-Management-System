@@ -91,6 +91,7 @@
         <a class="button" href="{{ url_for('set_role', role='MEDICAL_STAFF') }}">Login as MEDICAL_STAFF</a>
         <a class="button" href="{{ url_for('logout') }}">Reset to GUEST</a>
         <a class="button-green" href="{{ url_for('signup') }}">Sign Up</a>
+        <a class="button-red" href="{{ url_for('refresh_tables') }}">Refresh Tables</a>
     </div>
 
     <!-- Buttons for the backend query routes -->
@@ -109,13 +110,13 @@
         <a class="button" href="{{ url_for('show_all_medical_records') }}">Show All Medical Records</a>
         <a class="button-red" href="{{ url_for('show_all_users') }}">Show All Users (temporary)</a>
         <a class="button" href="{{ url_for('show_ward_details') }}">Show Ward Details</a>
-        
+
         <a class="button" href="{{ url_for('show_upcoming_appointments')}}">Show Upcoming Appointments</a>
         <a class="button" href="{{ url_for('low_medicine_stock')}}">Low Medicine Stock</a>
         <a class="button" href="{{ url_for('available_doctors') }}">Show Available Doctors</a>
         <a class="button" href="{{ url_for('patient_appointment_summary') }}">Patient Appointment Summary</a>
     </div>
-    
+
 
 </body>
 

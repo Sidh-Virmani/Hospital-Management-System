@@ -1,5 +1,6 @@
 from flask import Flask, render_template, session, redirect, url_for, request
 from db import get_db_connection
+import os
 
 # Create Flask app
 app = Flask(__name__)
@@ -141,6 +142,48 @@ def signup():
             return render_template('home.html')
     # Render form on GET request
     return render_template('signup.html')
+
+
+#==========================================================
+# REFRESH TABLES
+# This route will execute the SQL queries to recreate the database
+#==========================================================
+@app.route('/refresh_tables')
+def refresh_tables():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        # 1. Read and execute the schema file
+        with open('./sql_files/01_schema.sql', 'r') as schema_file:
+            schema_sql = schema_file.read()
+            
+        queries = [q.strip() for q in schema_sql.split(';') if q.strip()]
+        for query in queries:
+            cursor.execute(query)
+            
+        # 2. Read and execute the sample data file
+        with open('./sql_files/03_sample_data.sql', 'r') as data_file:
+            data_sql = data_file.read()
+            
+        queries = [q.strip() for q in data_sql.split(';') if q.strip()]
+        for query in queries:
+            cursor.execute(query)
+
+        # Commit all the schema creations and inserts
+        conn.commit()
+        p = "Database successfully refreshed!"
+
+    except Exception as e:
+        conn.rollback() # Important: rollback if there's an error
+        p = f"Failed to refresh tables: {e}"
+        
+    finally:
+        cursor.close()
+        conn.close()
+
+    return render_template('signup.html', error = p )
+
 
 # =========================================================
 # QUERY 1

@@ -211,3 +211,98 @@ LEFT JOIN patients p
     ON mr.patient_id = p.patient_id
 LEFT JOIN doctors doc 
     ON mr.doctor_id = doc.doctor_id;
+
+-- =========================================================
+-- QUERY 12
+-- UI Button: Upcoming Appointments
+-- Role allowed: ADMIN, MEDICAL STAFF, NON MEDICAL STAFF
+-- Purpose: Display all medical information for a specific patient.
+-- =========================================================
+
+select patient_id, doctor_id, appointment_date, appointment_time 
+from appointments 
+where appointment_date > curdate() or (appointment_date = curdate() and appointment_time >= curtime()) 
+and appointment_status != 'CANCELLED'
+order by appointment_date, appointment_time;
+
+-- =========================================================
+-- QUERY 13
+-- UI Button: Low Medicine Stock
+-- Role allowed: ADMIN,  NON MEDICAL STAFF
+-- Purpose: Display all medicines having low stock.
+-- =========================================================
+
+SELECT * FROM medicines
+WHERE medicine_stock < 100;
+
+-- =========================================================
+-- QUERY 14
+-- UI Button: Available Doctors
+-- Role allowed: ADMIN, MEDICAL STAFF, NON MEDICAL STAFF, PATIENT
+-- Purpose: Display all doctors who are currently available.
+-- =========================================================
+
+SELECT 
+        d.doctor_id,
+        u.username AS doctor_name,
+        d.specialization,
+        d.availability_status,
+        dep.department_name
+    FROM doctors d
+    JOIN medical_staff ms
+        ON d.staff_id = ms.staff_id
+    JOIN users u
+        ON ms.user_id = u.user_id
+    LEFT JOIN departments dep
+        ON ms.department_id = dep.department_id
+    WHERE d.availability_status = 'AVAILABLE'
+    ORDER BY dep.department_name;
+
+-- =========================================================
+-- QUERY 15
+-- UI Button: Patient Appointment Summary
+-- Role allowed: ADMIN, MEDICAL STAFF, NON MEDICAL STAFF
+-- Purpose: Displays number of complete appointments for each patient as well as whether they have
+--          any upcoming appointments, and if yes, when is the next one.
+-- =========================================================
+
+
+    SELECT 
+    p.patient_id,
+    p.name,
+
+    COUNT(
+    CASE 
+        WHEN a.appointment_status = 'COMPLETED' 
+        THEN 1 
+    END
+) AS total_completed_appointments,
+
+    CASE 
+        WHEN MIN(
+            CASE 
+                WHEN (a.appointment_date > CURDATE() 
+                      OR (a.appointment_date = CURDATE() AND a.appointment_time >= CURTIME()))
+                THEN CONCAT(a.appointment_date, ' ', a.appointment_time)
+                ELSE NULL
+            END
+        ) IS NOT NULL 
+        THEN 'YES'
+        ELSE 'NO'
+    END AS has_upcoming_appointment,
+
+    MIN(
+        CASE 
+            WHEN (a.appointment_date > CURDATE() 
+                  OR (a.appointment_date = CURDATE() AND a.appointment_time >= CURTIME()))
+            THEN CONCAT(a.appointment_date, ' ', a.appointment_time)
+            ELSE NULL
+        END
+    ) AS next_appointment
+
+FROM patients p
+LEFT JOIN appointments a 
+    ON p.patient_id = a.patient_id
+
+GROUP BY p.patient_id, p.name
+ORDER BY p.name;

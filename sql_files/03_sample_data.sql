@@ -102,7 +102,7 @@ INSERT INTO medicines (medicine_name, medicine_stock, medicine_price, medicine_m
 ('Amoxicillin 250mg', 800, 150, 'HealthMeds LLC'),
 ('Ibuprofen 400mg', 1200, 55, 'Wellness Pharma'),
 ('Cetirizine 10mg', 600, 42, 'AllergyCare Ltd.'),
-('Omeprazole 20mg', 450, 125, 'GastroMed Co.'),
+('Omeprazole 20mg', 45, 125, 'GastroMed Co.'),
 ('Metformin 500mg', 2000, 89, 'DiabeticCare Inc.'),
 ('Aspirin 81mg', 900, 30, 'CardioHealth Pharma'),
 ('Atorvastatin 40mg', 550, 220, 'CholesterolMeds Corp.'),

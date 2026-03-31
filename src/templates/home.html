@@ -38,6 +38,34 @@
             background-color: #005fa3;
         }
 
+        a.button-red {
+            display: inline-block;
+            margin: 8px 8px 8px 0;
+            padding: 10px 14px;
+            text-decoration: none;
+            background-color: #cd1111;
+            color: white;
+            border-radius: 6px;
+        }
+
+        a.button-red:hover {
+            background-color: #ab0f0f;
+        }
+
+        a.button-green {
+            display: inline-block;
+            margin: 8px 8px 8px 0;
+            padding: 10px 14px;
+            text-decoration: none;
+            background-color: #00cc00;
+            color: white;
+            border-radius: 6px;
+        }
+
+        a.button-green:hover {
+            background-color: #009900;
+        }
+
         .small-link {
             display: inline-block;
             margin-right: 10px;
@@ -62,6 +90,7 @@
         <a class="button" href="{{ url_for('set_role', role='PATIENT') }}">Login as PATIENT</a>
         <a class="button" href="{{ url_for('set_role', role='MEDICAL_STAFF') }}">Login as MEDICAL_STAFF</a>
         <a class="button" href="{{ url_for('logout') }}">Reset to GUEST</a>
+        <a class="button-green" href="{{ url_for('signup') }}">Sign Up</a>
     </div>
 
     <!-- Buttons for the backend query routes -->
@@ -76,10 +105,9 @@
         <a class="button" href="{{ url_for('show_all_staff') }}">Show All Staff</a>
         <a class="button" href="{{ url_for('show_all_medicines') }}">Show All Medicines</a>
         <a class="button" href="{{ url_for('show_all_appointments') }}">Show All Appointments</a>
-
         <a class="button" href="{{ url_for('show_all_prescriptions') }}">Show All Prescriptions</a>
         <a class="button" href="{{ url_for('show_all_medical_records') }}">Show All Medical Records</a>
-        <a class="button" href="{{ url_for('show_all_diagnoses') }}">Show All Diagnoses</a>
+        <a class="button-red" href="{{ url_for('show_all_users') }}">Show All Users (temporary)</a>
         <a class="button" href="{{ url_for('show_ward_details') }}">Show Ward Details</a>
     </div>
 

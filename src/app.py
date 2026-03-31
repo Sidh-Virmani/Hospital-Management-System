@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, redirect, url_for
+from flask import Flask, render_template, session, redirect, url_for, request
 from db import get_db_connection
 
 # Create Flask app
@@ -56,11 +56,11 @@ def logout():
 # {"column_name": value}
 # which makes HTML display easier.
 # ---------------------------------------------------------
-def run_select_query(query):
+def run_select_query(query, params=None):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute(query)
+    cursor.execute(query, params)
     results = cursor.fetchall()
 
     cursor.close()
@@ -68,6 +68,79 @@ def run_select_query(query):
 
     return results
 
+# ---------------------------------------------------------
+# HELPER FUNCTION
+# This function runs an INSERT, UPDATE, or DELETE query and commits the transaction.
+# ---------------------------------------------------------
+def run_insert_query(query, params=None):
+    """
+    Args:
+        query (str): The SQL query string.
+        params (tuple, optional): A tuple of parameters to safely inject into the query. 
+    Returns:
+        int: The ID of the last inserted row (if applicable).
+    """
+    conn = get_db_connection()
+    # We do not need dictionary=True here because we aren't fetching rows
+    cursor = conn.cursor()
+
+    try:
+        # Using params prevents SQL injection vulnerabilities
+        if params:
+            cursor.execute(query, params)
+        else:
+            cursor.execute(query)
+            
+        # Crucial step: Commit the transaction to save changes to the database
+        conn.commit()
+        
+        # Capture the ID of the newly inserted row
+        last_inserted_id = cursor.lastrowid
+        
+    except Exception as e:
+        # If something goes wrong, rollback the transaction
+        conn.rollback()
+        print(f"Error executing query: {e}")
+        raise e
+        
+    finally:
+        # Ensure cleanup always happens, even if an error occurred
+        cursor.close()
+        conn.close()
+
+    return last_inserted_id
+
+
+
+# =========================================================
+# SIGN UP
+# =========================================================
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        role = request.form['role']
+        
+        if not username or not password or not role:
+            return render_template('signup.html', error="Please fill all the fields")
+        
+        users = run_select_query("SELECT username FROM users WHERE username = %s", (username,))
+        
+        if users:
+            return render_template('signup.html', error="Username already exists")
+
+        try:
+            query = """
+            INSERT INTO users (username, password, role) VALUES (%s, %s, %s);
+            """
+            run_insert_query(query, (username, password, role))
+        except Exception as e:
+            return render_template('signup.html', error="some error occured")
+        finally:
+            return render_template('home.html')
+    # Render form on GET request
+    return render_template('signup.html')
 
 # =========================================================
 # QUERY 1
@@ -389,39 +462,28 @@ def show_all_medical_records():
     )  
 
 # =========================================================
-# QUERY 11
-# UI Button: Show All Diagnoses
+# QUERY 11 (only for debugging purposes)
+# UI Button: Show All users
 # Role allowed: ADMIN, MEDICAL_STAFF, PATIENT, DOCTOR
 # =========================================================
-@app.route("/show_all_diagnoses")
-def show_all_diagnoses():
+@app.route("/show_all_users")
+def show_all_users():
     if session.get("role") not in ["ADMIN", "MEDICAL_STAFF", "PATIENT", "DOCTOR"]:
         return "Access Denied: Only ADMIN, MEDICAL_STAFF, PATIENT, or DOCTOR can view all diagnoses."
 
     query = """
     SELECT 
-        d.diagnosis_id as id,
-        p.name as patient_name,
-        doc.doctor_id as doctor_id,
-        mr.visit_date as date,
-        d.disease as disease,
-        d.severity as severity
-    FROM diagnoses d
-    LEFT JOIN medical_records mr
-        ON d.record_id = mr.record_id
-    LEFT JOIN patients p 
-        ON mr.patient_id = p.patient_id
-    LEFT JOIN doctors doc 
-        ON mr.doctor_id = doc.doctor_id;
+        *
+    FROM users;
     """
 
     data = run_select_query(query)
 
     return render_template(
         "table.html",
-        title="All Diagnoses",
+        title="All Users",
         data=data
-    )  
+    )
 
 # =========================================================
 # QUERY 12

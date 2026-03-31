@@ -423,6 +423,31 @@ def show_all_diagnoses():
         data=data
     )  
 
+# =========================================================
+# QUERY 12
+# UI Button: Show Ward and Nurse details
+# Role allowed: ADMIN, MEDICAL_STAFF, DOCTOR
+# =========================================================
+@app.route("/show_ward_details")
+def show_ward_details():
+    if session.get("role") not in ["ADMIN", "MEDICAL_STAFF", "DOCTOR"]:
+        return "Access Denied: Only ADMIN, MEDICAL_STAFF or DOCTOR can view ward details."
+
+    query = """
+    SELECT 
+        users.username, wards.ward_name
+    FROM nurse_wards LEFT JOIN wards on nurse_wards.ward_id=wards.ward_id LEFT JOIN (nurses LEFT JOIN users on nurses.staff_id=users.user_id) 
+    on nurse_wards.nurse_id=nurses.nurse_id;
+    """
+
+    data = run_select_query(query)
+
+    return render_template(
+        "table.html",
+        title="Ward Details",
+        data=data
+    ) 
+
 # ---------------------------------------------------------
 # Run the Flask app
 # debug=True means code changes auto-refresh while developing

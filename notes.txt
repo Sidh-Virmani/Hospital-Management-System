@@ -2,3 +2,4 @@ Please add any changes you're making here so its easier to keep track
 
 1. Have created a wards and a wards_assigned table not given in ER diagram to convey the M:N relationship between nurses and wards.  
 2. add name column to doctors, for now some tables just display doctor id instead of doctor name.
+3. Make visit_date in medical_records a foreign key from appointment_date in appointments.

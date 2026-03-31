@@ -294,4 +294,57 @@ LEFT JOIN appointments a
     ON p.patient_id = a.patient_id
 
 GROUP BY p.patient_id, p.name
-ORDER BY p.name;
+ORDER BY p.name; 
+
+-- =========================================================
+-- QUERY 16
+-- UI Button: "Search Patient by Name"
+-- Purpose: Find patient using name
+-- =========================================================
+SELECT *
+FROM patients
+WHERE name LIKE '%John%';
+
+-- =========================================================
+-- QUERY 17
+-- UI Button: "Doctors by Specialization"
+-- Purpose: Show doctors of a specific specialization
+-- =========================================================
+SELECT *
+FROM doctors
+WHERE specialization = 'Cardiology';
+
+-- =========================================================
+-- QUERY 17
+-- UI Button: "Doctors by Specialization"
+-- Purpose: Show doctors of a specific specialization
+-- =========================================================
+SELECT *
+FROM doctors
+WHERE specialization = 'Cardiology';
+
+-- =========================================================
+-- QUERY 18
+-- UI Button: "Appointments by Status"
+-- Purpose: Show all confirmed appointments
+-- =========================================================
+SELECT *
+FROM appointments
+WHERE appointment_status = 'CONFIRMED';
+
+-- =========================================================
+-- QUERY 19
+-- UI Button: "Patients Above Age 20"
+-- Purpose: Filter patients by age
+-- =========================================================
+SELECT *
+FROM patients
+WHERE age > 20;
+
+-- =========================================================
+-- QUERY 20
+-- UI Button: "Total Medicines Count"
+-- Purpose: Count medicines available
+-- =========================================================
+SELECT COUNT(*) AS total_medicines
+FROM medicines;

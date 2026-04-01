@@ -151,3 +151,48 @@ INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_t
 (1, 1, '2026-04-06', '13:30:00', 'PENDING'),
 (4, 4, '2026-02-25', '14:00:00', 'COMPLETED');
 
+-- BILLS
+INSERT INTO bills (patient_id, bill_date, total_amount) VALUES
+(1, '2026-04-01', 1800.00),   -- John Doe
+(2, '2026-04-01', 2200.00),   -- Clary Fray
+(3, '2026-04-02', 1500.00),   -- Jake Herondale
+(4, '2026-02-25', 1200.00);   -- Abc
+
+-- BILL ITEMS
+INSERT INTO bill_items (bill_id, description, cost) VALUES
+
+-- Bill 1 (John Doe)
+(1, 'Doctor Consultation', 500.00),
+(1, 'Blood Test', 800.00),
+(1, 'Medicines', 500.00),
+
+-- Bill 2 (Clary Fray)
+(2, 'Orthopedic Consultation', 700.00),
+(2, 'X-Ray', 1000.00),
+(2, 'Pain Medication', 500.00),
+
+-- Bill 3 (Jake Herondale)
+(3, 'Neurology Consultation', 800.00),
+(3, 'MRI Scan', 700.00),
+
+-- Bill 4 (Abc)
+(4, 'Pediatric Consultation', 400.00),
+(4, 'Lab Tests', 500.00),
+(4, 'Medicines', 300.00);
+
+-- PAYMENTS
+INSERT INTO payments (bill_id, payment_mode, amount, payment_date) VALUES
+
+-- Bill 1 → fully paid
+(1, 'UPI', 1800.00, '2026-04-01'),
+
+-- Bill 2 → partial payments
+(2, 'CASH', 1000.00, '2026-04-01'),
+(2, 'CARD', 1200.00, '2026-04-02'),
+
+-- Bill 3 → unpaid (test case)
+-- no entry
+
+-- Bill 4 → fully paid in 2 parts
+(4, 'CASH', 700.00, '2026-02-25'),
+(4, 'UPI', 500.00, '2026-02-26');

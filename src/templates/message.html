@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="card form-box">
+    <h2 class="page-title">{{ title }}</h2>
+
+    <div class="alert 
+        {% if kind == 'error' %}alert-error{% elif kind == 'success' %}alert-success{% else %}alert-info{% endif %}">
+        {{ message }}
+    </div>
+
+    <div class="btn-row">
+        <a class="btn" href="{{ url_for('home') }}">Back to Dashboard</a>
+        <a class="btn btn-light" href="{{ url_for('login') }}">Go to Login</a>
+    </div>
+</div>
+{% endblock %}

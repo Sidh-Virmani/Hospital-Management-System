@@ -1,123 +1,53 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
-    <title>Hospital Management System</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-        }
+{% block title %}Dashboard - Hospital Management System{% endblock %}
 
-        h1 {
-            margin-bottom: 10px;
-        }
+{% block content %}
+<h2 class="page-title">Dashboard</h2>
+<p class="page-subtitle">
+    Role-based hospital operations panel. Use this to demonstrate both data retrieval and real workflows.
+</p>
 
-        .role-box {
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            width: fit-content;
-        }
-
-        .section {
-            margin-top: 25px;
-        }
-
-        a.button {
-            display: inline-block;
-            margin: 8px 8px 8px 0;
-            padding: 10px 14px;
-            text-decoration: none;
-            background-color: #0077cc;
-            color: white;
-            border-radius: 6px;
-        }
-
-        a.button:hover {
-            background-color: #005fa3;
-        }
-
-        a.button-red {
-            display: inline-block;
-            margin: 8px 8px 8px 0;
-            padding: 10px 14px;
-            text-decoration: none;
-            background-color: #cd1111;
-            color: white;
-            border-radius: 6px;
-        }
-
-        a.button-red:hover {
-            background-color: #ab0f0f;
-        }
-
-        a.button-green {
-            display: inline-block;
-            margin: 8px 8px 8px 0;
-            padding: 10px 14px;
-            text-decoration: none;
-            background-color: #00cc00;
-            color: white;
-            border-radius: 6px;
-        }
-
-        a.button-green:hover {
-            background-color: #009900;
-        }
-
-        .small-link {
-            display: inline-block;
-            margin-right: 10px;
-        }
-    </style>
-</head>
-
-<body>
-
-    <h1>Hospital Management System</h1>
-
-    <!-- Show current role -->
-    <div class="role-box">
-        <strong>Current Role:</strong> {{ role }}
+<div class="grid grid-3">
+    <div class="card">
+        <h3>Current Session</h3>
+        <p><strong>Role:</strong> {{ session.get('role', 'GUEST') }}</p>
+        <p><strong>User:</strong> {{ session.get('username', 'Guest') }}</p>
+        <p><strong>Demo Mode:</strong> {{ 'Yes' if session.get('demo_mode') else 'No' }}</p>
     </div>
 
-    <!-- Temporary role selection buttons -->
+    <div class="card">
+        <h3>Useful Demo Flow</h3>
+        <p class="muted">
+            Login → show role-based dashboard → open tables → create/update data using forms → re-open listing pages to show database changes.
+        </p>
+    </div>
+
+    <div class="card">
+        <h3>Admin Utility</h3>
+        <p class="muted">
+            Database reset is still available for quick evaluation recovery.
+        </p>
+        {% if session.get('role') == 'ADMIN' %}
+            <div class="btn-row">
+                <a class="btn btn-red" href="{{ url_for('refresh_tables') }}">Refresh Tables</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% for section in sections %}
     <div class="section">
-        <h3>Select Role (Temporary for Testing)</h3>
-
-        <a class="button" href="{{ url_for('set_role', role='ADMIN') }}">Login as ADMIN</a>
-        <a class="button" href="{{ url_for('set_role', role='PATIENT') }}">Login as PATIENT</a>
-        <a class="button" href="{{ url_for('set_role', role='MEDICAL_STAFF') }}">Login as MEDICAL_STAFF</a>
-        <a class="button" href="{{ url_for('logout') }}">Reset to GUEST</a>
-        <a class="button-green" href="{{ url_for('signup') }}">Sign Up</a>
-        <a class="button-red" href="{{ url_for('refresh_tables') }}">Refresh Tables</a>
+        <h3>{{ section.title }}</h3>
+        <div class="grid grid-3">
+            {% for action in section.actions %}
+                <div class="action-card">
+                    <h4>{{ action.label }}</h4>
+                    <p>{{ action.desc }}</p>
+                    <a class="btn" href="{{ url_for(action.endpoint) }}">Open</a>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-
-    <!-- Buttons for the backend query routes -->
-    <div class="section">
-        <h3>Available Actions</h3>
-
-        <a class="button" href="{{ url_for('show_doctors') }}">Show All Doctors</a>
-        <a class="button" href="{{ url_for('view_patients') }}">View All Patients</a>
-        <a class="button" href="{{ url_for('medical_history') }}">View Patient Medical History</a>
-        <a class="button" href="{{ url_for('patient_diagnoses') }}">View Patient Diagnoses</a>
-        <a class="button" href="{{ url_for('department_heads') }}">Show Department Heads</a>
-        <a class="button" href="{{ url_for('show_all_staff') }}">Show All Staff</a>
-        <a class="button" href="{{ url_for('show_all_medicines') }}">Show All Medicines</a>
-        <a class="button" href="{{ url_for('show_all_appointments') }}">Show All Appointments</a>
-        <a class="button" href="{{ url_for('show_all_prescriptions') }}">Show All Prescriptions</a>
-        <a class="button" href="{{ url_for('show_all_medical_records') }}">Show All Medical Records</a>
-        <a class="button-red" href="{{ url_for('show_all_users') }}">Show All Users (temporary)</a>
-        <a class="button" href="{{ url_for('show_ward_details') }}">Show Ward Details</a>
-
-        <a class="button" href="{{ url_for('show_upcoming_appointments')}}">Show Upcoming Appointments</a>
-        <a class="button" href="{{ url_for('low_medicine_stock')}}">Low Medicine Stock</a>
-        <a class="button" href="{{ url_for('available_doctors') }}">Show Available Doctors</a>
-        <a class="button" href="{{ url_for('patient_appointment_summary') }}">Patient Appointment Summary</a>
-    </div>
-
-
-</body>
-
-</html>
+{% endfor %}
+{% endblock %}

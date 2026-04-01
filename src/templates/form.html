@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="form-box card">
+    <h2 class="page-title">{{ title }}</h2>
+    <p class="page-subtitle">Fill the form below and submit.</p>
+
+    <form method="POST" class="form-grid">
+        {% for field in fields %}
+            <div class="field">
+                <label>{{ field.label }}</label>
+
+                {% if field.type == 'textarea' %}
+                    <textarea name="{{ field.name }}" {% if field.required %}required{% endif %}>{{ field.value or '' }}</textarea>
+
+                {% elif field.type == 'select' %}
+                    <select name="{{ field.name }}" {% if field.required %}required{% endif %}>
+                        {% for option in field.options %}
+                            <option value="{{ option.value }}">{{ option.label }}</option>
+                        {% endfor %}
+                    </select>
+
+                {% elif field.type == 'readonly_text' %}
+                    <div class="readonly-box">{{ field.value }}</div>
+
+                {% else %}
+                    <input
+                        type="{{ field.type }}"
+                        name="{{ field.name }}"
+                        value="{{ field.value or '' }}"
+                        {% if field.required %}required{% endif %}
+                    >
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <div class="btn-row">
+            <button class="btn" type="submit">{{ submit_label }}</button>
+            <a class="btn btn-light" href="{{ url_for('home') }}">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

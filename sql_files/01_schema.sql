@@ -259,4 +259,41 @@ CREATE TABLE appointments (
         REFERENCES doctors(doctor_id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
-);  
+); 
+CREATE TABLE bills (
+    bill_id INT PRIMARY KEY AUTO_INCREMENT,
+    patient_id INT NOT NULL,
+    bill_date DATE NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+
+    CONSTRAINT fk_bill_patient
+        FOREIGN KEY (patient_id)
+        REFERENCES patients(patient_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+CREATE TABLE bill_items (
+    bill_item_id INT PRIMARY KEY AUTO_INCREMENT,
+    bill_id INT NOT NULL,
+    description VARCHAR(255),
+    cost DECIMAL(10,2) NOT NULL,
+
+    CONSTRAINT fk_bill_items_bill
+        FOREIGN KEY (bill_id)
+        REFERENCES bills(bill_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+); 
+CREATE TABLE payments (
+    payment_id INT PRIMARY KEY AUTO_INCREMENT,
+    bill_id INT NOT NULL,
+    payment_mode ENUM('CASH', 'CARD', 'UPI', 'INSURANCE') NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    payment_date DATE NOT NULL,
+
+    CONSTRAINT fk_payment_bill
+        FOREIGN KEY (bill_id)
+        REFERENCES bills(bill_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);

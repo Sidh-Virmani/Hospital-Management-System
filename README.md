@@ -1,112 +1,149 @@
-# 🏥 Hospital Management System
+# Hospital Management System
 
-A database-driven Hospital Management System designed to manage hospital operations with role-based access for **Admin, Medical Staff, Non-Medical Staff, and Patients**.
-
----
-
-## 📌 Objective
-
-To design and implement a structured database system that efficiently handles hospital workflows including patient management, appointments, medical records, and billing.
+A full-stack database-driven Hospital Management System with a clean UI, role-based access control, and real CRUD workflows built using Flask and MySQL.
 
 ---
 
-## 🧠 System Design
+## Objective
 
-The system follows a relational architecture with a centralized **users table** and role-based extensions:
+To design and implement a real-world hospital database system that supports:
+- structured relational modeling  
+- role-based operations  
+- real-time data interaction through a web interface  
 
-* Users → Authentication & roles
-* Medical Staff → Doctors / Nurses specialization
-* Patients → Personal & medical data
-* Appointments → Scheduling system
-* Medical Records → Diagnosis & prescriptions
-* Billing → Bills, payments, and items
+The focus is on DBMS concepts and practical usability.
 
 ---
 
-## ⚙️ Features
+## System Design
 
-* 🔐 Role-based login system
-* 👨‍⚕️ Doctor & nurse management
-* 🧑 Patient records management
-* 📅 Appointment scheduling
-* 🧾 Billing & payment tracking
-* 💊 Prescription and diagnosis handling
-* 🏥 Department and ward organization
+The system is built on a normalized relational schema with strong foreign key constraints.
 
----
+### Core Architecture:
+- Users → authentication and role management  
+- Patients → personal and medical data  
+- Medical Staff → doctors, nurses, departments  
+- Appointments → scheduling system  
+- Medical Records → visits, diagnoses, prescriptions  
+- Medicines → inventory management  
+- Billing → bills and payments  
 
-## 🛠️ Tech Stack
-
-* **Backend:** Flask (Python)
-* **Database:** MySQL
-* **Frontend:** (to be implemented)
-* **Version Control:** Git & GitHub
-
----
-
-## 🗂️ Project Structure
-
-```bash
-hospital-management-system/
-├── backend/
-├── database/
-│   └── 01_schema.sql
-├── frontend/              # (planned)
-├── README.md
-└── .gitignore
-```
+### DBMS Concepts Used:
+- Primary and Foreign Keys  
+- Cascading constraints  
+- Weak entities  
+- Many-to-many relationships  
+- Role-based data access  
 
 ---
 
-## 🚀 How to Run
+## Features
 
-### 🔧 Setup
-
-```bash
-git clone https://github.com/your-username/hospital-management-system.git
-cd hospital-management-system
-
-python -m venv venv
-venv\Scripts\activate   # Windows
-
-pip install -r requirements.txt
-```
-
-### 🗄️ Database Setup
-
-```bash
-mysql -u root -p < 01_schema.sql
-```
-
-### ▶️ Run Backend
-
-```bash
-python app.py
-```
+### Authentication and Roles
+- Login system (username + password)
+- Demo login for evaluation
+- Role-based access:
+  - ADMIN
+  - PATIENT
+  - MEDICAL_STAFF
+  - NON_MEDICAL_STAFF
+  - GUEST
 
 ---
 
-## 📈 Current Status
-
-* Database schema designed and implemented
-* Core relationships and constraints enforced
-* Backend development in progress
-
----
-
-## 👥 Team Members
-
-* Sidh Virmani — 2024A7PS0520G
-* Rhea Jain — 2024A7PS0575G
-* Ishani Tagare — 2024A7RM0216G
-* Aditya Anand Kumar Singh — 2024A7PS0502G
-* Shivani Deo — 2024A7PS0051G
-* Mridul Sardana — 2024A7PS0547G
+### Data Viewing
+- View doctors, patients, staff  
+- View appointments  
+- View medical history and diagnoses  
+- View prescriptions and records  
+- View departments and wards  
+- View upcoming appointments  
+- Patient appointment summary  
+- Low medicine stock  
 
 ---
 
-## 📄 Note
+### Data Operations
 
-This project is developed as part of DBMS coursework and focuses on building a scalable and well-structured relational database system.
+#### User and Staff
+- Register patient  
+- Register medical staff  
+- Add doctor profile  
+
+#### Appointments
+- Book appointment  
+- Update appointment status  
+
+#### Medical
+- Add medical record  
+- Add diagnosis  
+
+#### Inventory
+- Add medicine  
+- Update medicine stock  
+- Update doctor availability  
 
 ---
+
+## Role-Based Behavior
+
+| Role | Capabilities |
+|------|-------------|
+| ADMIN | Full access |
+| PATIENT | Own data access |
+| MEDICAL_STAFF | Medical operations |
+| NON_MEDICAL_STAFF | Inventory and scheduling |
+| GUEST | Limited access |
+
+---
+
+## UI
+
+- Dashboard-based layout  
+- Role-specific sections  
+- Reusable forms  
+- Table-based data display  
+- Clean minimal design  
+
+---
+
+## Tech Stack
+
+- Backend: Flask (Python)  
+- Database: MySQL  
+- Frontend: HTML + CSS  
+- Version Control: Git  
+
+---
+
+## Current Status
+
+- Fully working backend and UI  
+- Role-based system implemented  
+- CRUD operations implemented  
+- Complex queries integrated  
+
+---
+
+## Notes
+
+- Passwords stored in plain text (demo purpose)  
+- Demo login enabled  
+- Production should use hashing and proper authentication  
+
+---
+
+## Team Members
+
+- Sidh Virmani — 2024A7PS0520G  
+- Rhea Jain — 2024A7PS0575G  
+- Ishani Tagare — 2024A7RM0216G  
+- Aditya Anand Kumar Singh — 2024A7PS0502G  
+- Shivani Deo — 2024A7PS0051G  
+- Mridul Sardana — 2024A7PS0547G  
+
+---
+
+## Final Note
+
+This project demonstrates strong relational database design, backend integration, and practical DBMS implementation.

@@ -3,17 +3,44 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
+<div class="hero">
+    <h2>{{ title }}</h2>
+    <p>
+        Data view for hospital records and operational listings. Use the search bar below to instantly
+        filter visible rows on this page without reloading.
+    </p>
+</div>
+
 <h2 class="page-title">{{ title }}</h2>
 <p class="page-subtitle">Rows returned: {{ data|length if data else 0 }}</p>
 
-<div class="card">
+<div class="card table-card">
+    <div class="table-header">
+        <div class="toolbar">
+            <div class="search-wrap">
+                <input
+                    id="tableSearch"
+                    class="search-input"
+                    type="text"
+                    placeholder="Search in this table..."
+                    onkeyup="filterTableRows()"
+                >
+            </div>
+
+            <div class="btn-row" style="margin-top:0;">
+                <span class="table-chip">Live Table Search</span>
+                <a class="btn btn-light" href="{{ url_for('home') }}">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+
     {% if data and data|length > 0 %}
-        <div style="overflow-x:auto;">
-            <table>
+        <div class="table-shell">
+            <table id="dataTable">
                 <thead>
                     <tr>
                         {% for column in data[0].keys() %}
-                            <th>{{ column }}</th>
+                            <th>{{ column.replace('_', ' ') }}</th>
                         {% endfor %}
                     </tr>
                 </thead>
@@ -29,11 +56,31 @@
             </table>
         </div>
     {% else %}
-        <div class="alert alert-info">No data found.</div>
+        <div style="padding: 20px;">
+            <div class="alert alert-info">No data found.</div>
+            <div class="btn-row">
+                <a class="btn btn-light" href="{{ url_for('home') }}">Back to Dashboard</a>
+            </div>
+        </div>
     {% endif %}
-
-    <div class="btn-row">
-        <a class="btn btn-light" href="{{ url_for('home') }}">Back to Dashboard</a>
-    </div>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    function filterTableRows() {
+        const input = document.getElementById("tableSearch");
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById("dataTable");
+
+        if (!table) return;
+
+        const rows = table.getElementsByTagName("tr");
+
+        for (let i = 1; i < rows.length; i++) {
+            let text = rows[i].innerText.toLowerCase();
+            rows[i].style.display = text.includes(filter) ? "" : "none";
+        }
+    }
+</script>
 {% endblock %}

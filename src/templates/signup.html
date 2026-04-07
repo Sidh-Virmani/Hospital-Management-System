@@ -3,9 +3,19 @@
 {% block title %}Patient Sign Up{% endblock %}
 
 {% block content %}
+<div class="hero">
+    <h2>New Patient Registration</h2>
+    <p>
+        Public registration creates both the login account and the linked patient profile in one flow.
+        This is useful for showing account creation directly from the portal.
+    </p>
+</div>
+
 <div class="form-box card">
     <h2 class="page-title">Patient Sign Up</h2>
-    <p class="page-subtitle">Public signup creates a patient account and patient profile together.</p>
+    <p class="page-subtitle">
+        Create a new patient account with basic identity and profile details.
+    </p>
 
     {% if error %}
         <div class="alert alert-error">{{ error }}</div>
@@ -14,47 +24,47 @@
     <form method="POST" class="form-grid">
         <div class="field">
             <label>Username</label>
-            <input type="text" name="username" required>
+            <input type="text" name="username" required placeholder="Choose a username">
         </div>
 
         <div class="field">
             <label>Password</label>
-            <input type="password" name="password" required>
+            <input type="password" name="password" required placeholder="Create a password">
         </div>
 
         <div class="field">
             <label>Patient Name</label>
-            <input type="text" name="name" required>
+            <input type="text" name="name" required placeholder="Full patient name">
         </div>
 
         <div class="field">
             <label>Age</label>
-            <input type="number" name="age">
+            <input type="number" name="age" placeholder="Enter age">
         </div>
 
         <div class="field">
             <label>Gender</label>
-            <input type="text" name="gender">
+            <input type="text" name="gender" placeholder="Example: Male / Female / Other">
         </div>
 
         <div class="field">
             <label>Phone</label>
-            <input type="text" name="phone">
+            <input type="text" name="phone" placeholder="Contact number">
         </div>
 
         <div class="field">
             <label>Address</label>
-            <textarea name="address"></textarea>
+            <textarea name="address" placeholder="Residential address"></textarea>
         </div>
 
         <div class="field">
             <label>Blood Group</label>
-            <input type="text" name="blood_group">
+            <input type="text" name="blood_group" placeholder="Example: O+, B-, AB+">
         </div>
 
         <div class="btn-row">
             <button class="btn btn-green" type="submit">Create Patient Account</button>
-            <a class="btn btn-light" href="{{ url_for('login') }}">Back to Login</a>
+            <a class="btn btn-light" href="{{ url_for('auth_bp.login') }}">Back to Login</a>
         </div>
     </form>
 </div>

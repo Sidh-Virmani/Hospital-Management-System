@@ -3,51 +3,379 @@
 {% block title %}Dashboard - Hospital Management System{% endblock %}
 
 {% block content %}
-<h2 class="page-title">Dashboard</h2>
-<p class="page-subtitle">
-    Role-based hospital operations panel. Use this to demonstrate both data retrieval and real workflows.
-</p>
+<h2 class="page-title">Control Center</h2>
 
-<div class="grid grid-3">
-    <div class="card">
-        <h3>Current Session</h3>
-        <p><strong>Role:</strong> {{ session.get('role', 'GUEST') }}</p>
-        <p><strong>User:</strong> {{ session.get('username', 'Guest') }}</p>
-        <p><strong>Demo Mode:</strong> {{ 'Yes' if session.get('demo_mode') else 'No' }}</p>
+<div class="grid grid-4" style="margin-top: 18px; margin-bottom: 26px;">
+    <div class="stat-card">
+        <div class="stat-label">Current Role</div>
+        <div class="stat-value">{{ session.get('role', 'GUEST') }}</div>
     </div>
 
-    <div class="card">
-        <h3>Useful Demo Flow</h3>
-        <p class="muted">
-            Login → show role-based dashboard → open tables → create/update data using forms → re-open listing pages to show database changes.
-        </p>
+    <div class="stat-card">
+        <div class="stat-label">Session User</div>
+        <div class="stat-value" style="font-size:22px;">{{ session.get('username', 'Guest') }}</div>
     </div>
 
-    <div class="card">
-        <h3>Admin Utility</h3>
-        <p class="muted">
-            Database reset is still available for quick evaluation recovery.
-        </p>
-        {% if session.get('role') == 'ADMIN' %}
-            <div class="btn-row">
-                <a class="btn btn-red" href="{{ url_for('refresh_tables') }}">Refresh Tables</a>
-            </div>
-        {% endif %}
+    <div class="stat-card">
+        <div class="stat-label">Demo Mode</div>
+        <div class="stat-value">{{ 'Enabled' if session.get('demo_mode') else 'Disabled' }}</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label">Portal State</div>
+        <div class="stat-value" style="font-size:20px;">
+            <span class="status-dot dot-green"></span>Active
+        </div>
     </div>
 </div>
 
-{% for section in sections %}
-    <div class="section">
-        <h3>{{ section.title }}</h3>
-        <div class="grid grid-3">
-            {% for action in section.actions %}
-                <div class="action-card">
-                    <h4>{{ action.label }}</h4>
-                    <p>{{ action.desc }}</p>
-                    <a class="btn" href="{{ url_for(action.endpoint) }}">Open</a>
+{% if session.get('role') == 'GUEST' %}
+    <div class="dashboard-main-grid">
+        <div>
+            <div class="hero-action-card">
+                <h3>Welcome to Penguin Hospital</h3>
+                <p>
+                    Access doctors, hospital information and account features from one portal.
+                    Guests can explore doctor listings, create a patient account, or log in
+                    for a full personalized dashboard.
+                </p>
+
+                <div class="btn-row" style="margin-top:18px;">
+                    <a class="btn btn-green" href="{{ url_for('auth_bp.signup') }}">Create Patient Account</a>
+                    <a class="btn" href="{{ url_for('auth_bp.login') }}">Login</a>
+                    <a class="btn btn-light" href="{{ url_for('read_bp.available_doctors') }}">Browse Doctors</a>
                 </div>
-            {% endfor %}
+            </div>
+
+            <div class="mini-grid">
+                <div class="mini-card">
+                    <h4>Doctor Discovery</h4>
+                    <p>Browse all available doctors and specializations before booking or registering.</p>
+                    <div class="btn-row">
+                        <a class="btn" href="{{ url_for('read_bp.available_doctors') }}">Available Doctors</a>
+                    </div>
+                </div>
+
+                <div class="mini-card">
+                    <h4>Hospital Directory</h4>
+                    <p>Explore the full doctor directory with department and specialization details.</p>
+                    <div class="btn-row">
+                        <a class="btn btn-light" href="{{ url_for('read_bp.show_doctors') }}">All Doctors</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="side-panel">
+            <div class="card">
+                <h3>Quick Guest Access</h3>
+                <p class="muted">
+                    Ideal for evaluation. Jump into role-based demo sessions without entering credentials.
+                </p>
+
+                <div class="action-stack">
+                    <div class="action-row-card">
+                        <h4>Demo Patient</h4>
+                        <p>Preview the patient-side dashboard and user flow quickly.</p>
+                        <a class="btn" href="{{ url_for('auth_bp.demo_login', role='PATIENT') }}">Open Patient Demo</a>
+                    </div>
+
+                    <div class="action-row-card">
+                        <h4>Demo Admin</h4>
+                        <p>Open the admin control center for system-wide operations.</p>
+                        <a class="btn btn-secondary" href="{{ url_for('auth_bp.demo_login', role='ADMIN') }}">Open Admin Demo</a>
+                    </div>
+
+                    <div class="action-row-card">
+                        <h4>Demo Staff</h4>
+                        <p>Switch directly to medical or non-medical staff workflows.</p>
+                        <div class="btn-row">
+                            <a class="btn" href="{{ url_for('auth_bp.demo_login', role='MEDICAL_STAFF') }}">Medical Staff</a>
+                            <a class="btn btn-light" href="{{ url_for('auth_bp.demo_login', role='NON_MEDICAL_STAFF') }}">Non-Medical</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-{% endfor %}
+
+{% elif session.get('role') == 'PATIENT' %}
+    <div class="dashboard-main-grid">
+        <div>
+            <div class="hero-action-card">
+                <h3>Book Your Appointment</h3>
+                <p>
+                    This is the main patient action. Schedule a consultation, then track your
+                    appointments, diagnoses, prescriptions and medical history from one place.
+                </p>
+
+                <div class="btn-row" style="margin-top:18px;">
+                    <a class="btn btn-green" href="{{ url_for('actions_bp.book_appointment') }}">Book Appointment</a>
+                    <a class="btn btn-light" href="{{ url_for('read_bp.show_all_appointments') }}">My Appointments</a>
+                </div>
+            </div>
+
+            <div class="mini-grid">
+                <div class="mini-card">
+                    <h4>Medical History</h4>
+                    <p>Review previous visits, doctor notes and consultation records.</p>
+                    <div class="btn-row">
+                        <a class="btn" href="{{ url_for('read_bp.medical_history') }}">Open History</a>
+                    </div>
+                </div>
+
+                <div class="mini-card">
+                    <h4>Diagnoses & Prescriptions</h4>
+                    <p>See diseases diagnosed and medicines prescribed during your visits.</p>
+                    <div class="btn-row">
+                        <a class="btn btn-light" href="{{ url_for('read_bp.patient_diagnoses') }}">Diagnoses</a>
+                        <a class="btn btn-light" href="{{ url_for('read_bp.show_all_prescriptions') }}">Prescriptions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="side-panel">
+            <div class="card">
+                <h3>Patient Quick Access</h3>
+
+                <div class="action-stack">
+                    <div class="action-row-card">
+                        <h4>Appointments</h4>
+                        <p>View all your scheduled and completed appointments.</p>
+                        <a class="btn" href="{{ url_for('read_bp.show_all_appointments') }}">My Appointments</a>
+                    </div>
+
+                    <div class="action-row-card">
+                        <h4>Medicines</h4>
+                        <p>Browse the medicine list and hospital inventory information.</p>
+                        <a class="btn btn-light" href="{{ url_for('read_bp.show_all_medicines') }}">All Medicines</a>
+                    </div>
+
+                    <div class="action-row-card">
+                        <h4>Medical Records</h4>
+                        <p>Access all your stored medical records in one place.</p>
+                        <a class="btn btn-light" href="{{ url_for('read_bp.show_all_medical_records') }}">My Records</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% elif session.get('role') == 'MEDICAL_STAFF' %}
+    <div class="dashboard-main-grid">
+        <div>
+            <div class="hero-action-card">
+                <h3>Clinical Operations</h3>
+                <p>
+                    Manage appointments, patient records, diagnoses and doctor availability.
+                    The central medical staff workflow is designed around record handling and visit operations.
+                </p>
+
+                <div class="btn-row" style="margin-top:18px;">
+                    <a class="btn btn-green" href="{{ url_for('actions_bp.add_medical_record') }}">Add Medical Record</a>
+                    <a class="btn" href="{{ url_for('actions_bp.add_diagnosis') }}">Add Diagnosis</a>
+                    <a class="btn btn-light" href="{{ url_for('read_bp.view_patients') }}">View Patients</a>
+                </div>
+            </div>
+
+            <div class="mini-grid">
+                <div class="mini-card">
+                    <h4>Appointment Management</h4>
+                    <p>Check current appointments and update their workflow status.</p>
+                    <div class="btn-row">
+                        <a class="btn" href="{{ url_for('read_bp.show_all_appointments') }}">All Appointments</a>
+                        <a class="btn btn-light" href="{{ url_for('actions_bp.update_appointment_status') }}">Update Status</a>
+                    </div>
+                </div>
+
+                <div class="mini-card">
+                    <h4>Doctor Status Control</h4>
+                    <p>Change doctor availability and review ward mappings when needed.</p>
+                    <div class="btn-row">
+                        <a class="btn btn-light" href="{{ url_for('actions_bp.update_doctor_availability') }}">Doctor Availability</a>
+                        <a class="btn btn-light" href="{{ url_for('read_bp.show_ward_details') }}">Ward Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="side-panel">
+            <div class="card">
+                <h3>Medical Staff Quick Access</h3>
+
+                <div class="action-stack">
+                    <div class="action-row-card">
+                        <h4>Upcoming Appointments</h4>
+                        <p>Focus first on scheduled upcoming consultations.</p>
+                        <a class="btn" href="{{ url_for('read_bp.show_upcoming_appointments') }}">Upcoming</a>
+                    </div>
+
+                    <div class="action-row-card">
+                        <h4>Patient Directory</h4>
+                        <p>Browse the full patient list for treatment and record workflows.</p>
+                        <a class="btn btn-light" href="{{ url_for('read_bp.patient_directory') }}">Patient Directory</a>
+                    </div>
+
+                    <div class="action-row-card">
+                        <h4>Appointment Hub</h4>
+                        <p>Open the broader appointment view for tracking and filtering later.</p>
+                        <a class="btn btn-light" href="{{ url_for('read_bp.appointment_hub') }}">Appointment Hub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% elif session.get('role') == 'NON_MEDICAL_STAFF' %}
+    <div class="dashboard-main-grid">
+        <div>
+            <div class="hero-action-card">
+                <h3>Inventory & Scheduling Desk</h3>
+                <p>
+                    Non-medical operations revolve around medicine stock control and appointment support.
+                    This dashboard highlights the most used desk operations first.
+                </p>
+
+                <div class="btn-row" style="margin-top:18px;">
+                    <a class="btn btn-green" href="{{ url_for('actions_bp.add_medicine') }}">Add Medicine</a>
+                    <a class="btn" href="{{ url_for('actions_bp.update_medicine_stock') }}">Update Stock</a>
+                    <a class="btn btn-light" href="{{ url_for('read_bp.show_upcoming_appointments') }}">Upcoming Appointments</a>
+                </div>
+            </div>
+
+            <div class="mini-grid">
+                <div class="mini-card">
+                    <h4>Medicine Inventory</h4>
+                    <p>Browse the complete inventory and track stock levels across medicine records.</p>
+                    <div class="btn-row">
+                        <a class="btn" href="{{ url_for('read_bp.medicine_inventory') }}">Medicine Inventory</a>
+                    </div>
+                </div>
+
+                <div class="mini-card">
+                    <h4>Low Stock Monitoring</h4>
+                    <p>Quickly identify medicines that need replenishment.</p>
+                    <div class="btn-row">
+                        <a class="btn btn-light" href="{{ url_for('read_bp.low_medicine_stock') }}">Low Stock</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="side-panel">
+            <div class="card">
+                <h3>Desk Quick Access</h3>
+
+                <div class="action-stack">
+                    <div class="action-row-card">
+                        <h4>Appointment Hub</h4>
+                        <p>Monitor appointment flow and operational scheduling.</p>
+                        <a class="btn" href="{{ url_for('read_bp.appointment_hub') }}">Open Hub</a>
+                    </div>
+
+                    <div class="action-row-card">
+                        <h4>Patient Summary</h4>
+                        <p>See patient-wise appointment summaries for support workflows.</p>
+                        <a class="btn btn-light" href="{{ url_for('read_bp.patient_appointment_summary') }}">Patient Summary</a>
+                    </div>
+
+                    <div class="action-row-card">
+                        <h4>All Medicines</h4>
+                        <p>Access the standard medicine listing table.</p>
+                        <a class="btn btn-light" href="{{ url_for('read_bp.show_all_medicines') }}">All Medicines</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% elif session.get('role') == 'ADMIN' %}
+    <div class="dashboard-main-grid">
+        <div>
+            <div class="hero-action-card">
+                <h3>Administrative Command Center</h3>
+                <p>
+                    Manage patients, staff, doctors, appointments and operational records from a single admin panel.
+                    The most important control actions are surfaced first for quick presentation.
+                </p>
+
+                <div class="btn-row" style="margin-top:18px;">
+                    <a class="btn btn-green" href="{{ url_for('actions_bp.register_patient') }}">Register Patient</a>
+                    <a class="btn" href="{{ url_for('actions_bp.register_medical_staff') }}">Register Staff</a>
+                    <a class="btn btn-light" href="{{ url_for('actions_bp.add_doctor') }}">Add Doctor Profile</a>
+                </div>
+            </div>
+
+            <div class="mini-grid">
+                <div class="mini-card">
+                    <h4>Operations</h4>
+                    <p>Handle appointments, medical records, diagnoses and doctor availability.</p>
+                    <div class="btn-row">
+                        <a class="btn" href="{{ url_for('actions_bp.book_appointment') }}">Book Appointment</a>
+                        <a class="btn btn-light" href="{{ url_for('actions_bp.add_medical_record') }}">Add Record</a>
+                        <a class="btn btn-light" href="{{ url_for('actions_bp.add_diagnosis') }}">Add Diagnosis</a>
+                    </div>
+                </div>
+
+                <div class="mini-card">
+                    <h4>Reports & Listings</h4>
+                    <p>Open listings for doctors, patients, staff, prescriptions and records.</p>
+                    <div class="btn-row">
+                        <a class="btn btn-light" href="{{ url_for('read_bp.show_doctors') }}">Doctors</a>
+                        <a class="btn btn-light" href="{{ url_for('read_bp.view_patients') }}">Patients</a>
+                        <a class="btn btn-light" href="{{ url_for('read_bp.show_all_staff') }}">Staff</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="side-panel">
+            <div class="card">
+                <h3>Admin Recovery Tools</h3>
+                <p class="muted">
+                    Visible only to admins. Useful for quickly resetting the demo environment.
+                </p>
+
+                <div class="action-stack">
+                    <div class="action-row-card">
+                        <h4>Refresh Tables</h4>
+                        <p>Reload schema and sample data for quick recovery during evaluation.</p>
+                        <a class="btn btn-red" href="{{ url_for('read_bp.refresh_tables') }}">Refresh Tables</a>
+                    </div>
+
+                    <div class="action-row-card">
+                        <h4>User Listing</h4>
+                        <p>Open full user table for verification and quick debugging.</p>
+                        <a class="btn btn-light" href="{{ url_for('read_bp.show_all_users') }}">Show All Users</a>
+                    </div>
+
+                    <div class="action-row-card">
+                        <h4>Advanced Directories</h4>
+                        <p>Open upgraded directory-style pages built for future filter support.</p>
+                        <div class="btn-row">
+                            <a class="btn" href="{{ url_for('read_bp.doctor_directory') }}">Doctor Directory</a>
+                            <a class="btn btn-light" href="{{ url_for('read_bp.patient_directory') }}">Patient Directory</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<div class="section">
+    <h3 class="section-title">More Modules</h3>
+    <div class="quick-links-grid">
+        {% for section in sections %}
+            {% for action in section.actions %}
+                <div class="quick-link">
+                    <h4>{{ action.label }}</h4>
+                    <p>{{ action.desc }}</p>
+                    <a class="btn btn-light" href="{{ url_for(action.endpoint) }}">Open</a>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

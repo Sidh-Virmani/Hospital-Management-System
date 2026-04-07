@@ -3,8 +3,18 @@
 {% block title %}Login - Hospital Management System{% endblock %}
 
 {% block content %}
-<h2 class="page-title">Login</h2>
-<p class="page-subtitle">Use a real username/password from the database, or use quick demo access for evaluation.</p>
+<div class="hero">
+    <h2>Secure Staff & Patient Access</h2>
+    <p>
+        Sign in using hospital credentials or use role-based demo entry for project evaluation.
+        The same backend session system controls which modules appear on the dashboard.
+    </p>
+</div>
+
+<h2 class="page-title">Portal Login</h2>
+<p class="page-subtitle">
+    Use a real username/password from the database, or use quick demo access for role-based evaluation.
+</p>
 
 <div class="grid grid-2">
     <div class="card form-box">
@@ -17,17 +27,17 @@
         <form method="POST" class="form-grid">
             <div class="field">
                 <label>Username</label>
-                <input type="text" name="username" required>
+                <input type="text" name="username" required placeholder="Enter username">
             </div>
 
             <div class="field">
                 <label>Password</label>
-                <input type="password" name="password" required>
+                <input type="password" name="password" required placeholder="Enter password">
             </div>
 
             <div class="btn-row">
                 <button class="btn" type="submit">Login</button>
-                <a class="btn btn-green" href="{{ url_for('signup') }}">Patient Sign Up</a>
+                <a class="btn btn-green" href="{{ url_for('auth_bp.signup') }}">Patient Sign Up</a>
             </div>
         </form>
     </div>
@@ -35,22 +45,27 @@
     <div class="card">
         <h3>Quick Demo Access</h3>
         <p class="muted">
-            This is useful for live evaluation when you want to show role-based UI without typing credentials every time.
+            This is useful during live presentation when you want to switch roles quickly and show
+            different dashboards without typing credentials every time.
         </p>
 
         <div class="btn-row">
-            <a class="btn" href="{{ url_for('demo_login', role='ADMIN') }}">Demo Admin</a>
-            <a class="btn" href="{{ url_for('demo_login', role='PATIENT') }}">Demo Patient</a>
-            <a class="btn" href="{{ url_for('demo_login', role='MEDICAL_STAFF') }}">Demo Medical Staff</a>
-            <a class="btn btn-secondary" href="{{ url_for('demo_login', role='NON_MEDICAL_STAFF') }}">Demo Non-Medical Staff</a>
-            <a class="btn btn-light" href="{{ url_for('demo_login', role='GUEST') }}">Continue as Guest</a>
+            <a class="btn" href="{{ url_for('auth_bp.demo_login', role='ADMIN') }}">Demo Admin</a>
+            <a class="btn" href="{{ url_for('auth_bp.demo_login', role='PATIENT') }}">Demo Patient</a>
+            <a class="btn" href="{{ url_for('auth_bp.demo_login', role='MEDICAL_STAFF') }}">Demo Medical Staff</a>
+            <a class="btn btn-secondary" href="{{ url_for('auth_bp.demo_login', role='NON_MEDICAL_STAFF') }}">Demo Non-Medical Staff</a>
+            <a class="btn btn-light" href="{{ url_for('auth_bp.demo_login', role='GUEST') }}">Continue as Guest</a>
         </div>
 
         <div class="section">
-            <h4>Important Note</h4>
-            <p class="muted">
-                Demo role buttons are for UI showcase. For personal patient views like “My Appointments”, a real patient login is better because it links session to a real patient record.
-            </p>
+            <h4>Demo Note</h4>
+            <div class="subtle-box">
+                <p class="muted" style="margin:0;">
+                    Demo role buttons are best for UI showcase. For personal data pages like
+                    <strong>My Appointments</strong> or <strong>My Medical History</strong>,
+                    a real patient login is better because the session gets linked to an actual patient record.
+                </p>
+            </div>
         </div>
     </div>
 </div>

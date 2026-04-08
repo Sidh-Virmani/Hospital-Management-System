@@ -143,7 +143,7 @@ CREATE TABLE patients (
     patient_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL UNIQUE,
     name VARCHAR(100),
-    age INT,
+    age INT CHECK (age >= 0 AND age <= 130),
     gender VARCHAR(10),
     phone VARCHAR(15),
     address VARCHAR(255),

@@ -25,6 +25,14 @@ def register_patient():
             password = request.form["password"].strip()
             name = request.form["name"].strip()
             age = request.form.get("age", "").strip()
+            if age: 
+                age = int(age)
+                if age < 0 or age > 130:
+                    return render_message(
+                        "Invalid Age",
+                        "Age must be between 0 and 130",
+                        "error"
+                    )
             gender = request.form.get("gender", "").strip()
             phone = request.form.get("phone", "").strip()
             address = request.form.get("address", "").strip()

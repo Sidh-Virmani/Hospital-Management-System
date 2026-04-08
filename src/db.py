@@ -10,7 +10,7 @@ def get_db_connection():
     connection = mysql.connector.connect(
         host="localhost",              # MySQL server address
         user="root",                   # your MySQL username
-        password="[PASSWORD]",# replace with your actual MySQL password
+        password="",# replace with your actual MySQL password
         database="hospital_management" # the database we created
     )
     return connection

@@ -2,6 +2,169 @@
 
 {% block title %}Dashboard - Hospital Management System{% endblock %}
 
+{% block extra_head %}
+<style>
+    #chatbot-toggle {
+        position: fixed;
+        bottom: 22px;
+        right: 22px;
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        border: none;
+        background: linear-gradient(135deg, #1d4ed8, #06b6d4);
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 10px 25px rgba(29, 78, 216, 0.28);
+        z-index: 1000;
+    }
+
+    #chatbot-toggle:hover {
+        transform: translateY(-1px);
+    }
+
+    #chatbot-box {
+        position: fixed;
+        bottom: 92px;
+        right: 22px;
+        width: 360px;
+        max-width: calc(100vw - 24px);
+        height: 500px;
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(20, 33, 61, 0.18);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        z-index: 1000;
+    }
+
+    #chatbot-box.open {
+        display: flex;
+    }
+
+    .chatbot-header {
+        background: linear-gradient(135deg, #0f3b8f, #1d4ed8 55%, #06b6d4);
+        color: white;
+        padding: 14px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .chatbot-header-title {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .chatbot-header-title strong {
+        font-size: 15px;
+    }
+
+    .chatbot-header-title span {
+        font-size: 12px;
+        opacity: 0.9;
+    }
+
+    .chatbot-close {
+        border: none;
+        background: rgba(255,255,255,0.16);
+        color: white;
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 18px;
+    }
+
+    #chatbot-messages {
+        flex: 1;
+        padding: 14px;
+        background: #f8fbff;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .chat-msg {
+        max-width: 84%;
+        padding: 10px 12px;
+        border-radius: 14px;
+        line-height: 1.5;
+        font-size: 14px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    .chat-msg.bot {
+        align-self: flex-start;
+        background: white;
+        border: 1px solid var(--border);
+        color: var(--text);
+    }
+
+    .chat-msg.user {
+        align-self: flex-end;
+        background: #dbeafe;
+        color: #0f172a;
+        border: 1px solid #bfdbfe;
+    }
+
+    .chatbot-input-wrap {
+        border-top: 1px solid var(--border);
+        background: white;
+        padding: 12px;
+        display: flex;
+        gap: 10px;
+    }
+
+    #chatbot-input {
+        flex: 1;
+        border: 1px solid #cfd8e6;
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-size: 14px;
+        outline: none;
+    }
+
+    #chatbot-input:focus {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.16);
+    }
+
+    #chatbot-send {
+        border: none;
+        border-radius: 12px;
+        padding: 0 16px;
+        background: linear-gradient(135deg, #1d4ed8, #2563eb);
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+        #chatbot-box {
+            right: 12px;
+            bottom: 82px;
+            width: calc(100vw - 24px);
+            height: 70vh;
+        }
+
+        #chatbot-toggle {
+            right: 12px;
+            bottom: 12px;
+        }
+    }
+</style>
+{% endblock %}
+
+
+
 {% block content %}
 <h2 class="page-title">Control Center</h2>
 
@@ -378,4 +541,98 @@
         {% endfor %}
     </div>
 </div>
+<div id="chatbot-box">
+    <div class="chatbot-header">
+        <div class="chatbot-header-title">
+            <strong>Penguin Hospital Assistant</strong>
+            <span>Doctors, appointments, billing, medicines, navigation</span>
+        </div>
+        <button class="chatbot-close" type="button" onclick="toggleChatbot()">×</button>
+    </div>
+
+    <div id="chatbot-messages">
+        <div class="chat-msg bot">
+            Hello. I am the Penguin Hospital assistant. I can help with doctors, appointments, departments, medicines, billing, and website navigation.
+        </div>
+    </div>
+
+    <div class="chatbot-input-wrap">
+        <input
+            type="text"
+            id="chatbot-input"
+            placeholder="Ask a hospital-related question..."
+        >
+        <button id="chatbot-send" type="button" onclick="sendChatMessage()">Send</button>
+    </div>
+</div>
+
+<button id="chatbot-toggle" type="button" onclick="toggleChatbot()">💬</button>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    function toggleChatbot() {
+        const box = document.getElementById("chatbot-box");
+        box.classList.toggle("open");
+    }
+
+    function addChatMessage(text, sender) {
+        const messages = document.getElementById("chatbot-messages");
+        const msg = document.createElement("div");
+        msg.className = `chat-msg ${sender}`;
+        msg.textContent = text;
+        messages.appendChild(msg);
+        messages.scrollTop = messages.scrollHeight;
+        return msg;
+    }
+
+    async function sendChatMessage() {
+        const input = document.getElementById("chatbot-input");
+        const message = input.value.trim();
+
+        if (!message) return;
+
+        addChatMessage(message, "user");
+        input.value = "";
+
+        const thinkingMsg = addChatMessage("Thinking...", "bot");
+
+        try {
+            const response = await fetch("/api/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ message: message })
+            });
+
+            const data = await response.json();
+            thinkingMsg.remove();
+
+            addChatMessage(
+                data.reply || "Sorry, I could not get a response right now.",
+                "bot"
+            );
+        } catch (error) {
+            thinkingMsg.remove();
+            addChatMessage(
+                "Sorry, there was an error connecting to the chatbot.",
+                "bot"
+            );
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const input = document.getElementById("chatbot-input");
+
+        if (input) {
+            input.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    sendChatMessage();
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}

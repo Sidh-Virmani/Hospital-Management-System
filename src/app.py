@@ -6,6 +6,7 @@ from .session_helpers import ensure_session
 from .routes.routes_auth import auth_bp
 from .routes.routes_read import read_bp
 from .routes.routes_actions import actions_bp
+from .routes.routes_chat import chat_bp
 
 app = Flask(__name__)
 app.secret_key = "hospital_project_secret_key"
@@ -21,7 +22,7 @@ app.config["SQL_DIR"] = SQL_DIR
 app.register_blueprint(auth_bp)
 app.register_blueprint(read_bp)
 app.register_blueprint(actions_bp)
-
+app.register_blueprint(chat_bp)
 
 @app.route("/")
 def home():

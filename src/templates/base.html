@@ -61,14 +61,15 @@
         }
 
         .topbar-inner {
-            max-width: 1380px;
-            margin: 0 auto;
-            padding: 16px 24px;
+            width: 100%;
+            max-width: none;
+            margin: 0;
+            padding: 16px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
+            gap: 12px;
+            flex-wrap: nowrap;
         }
 
         .brand-wrap {
@@ -603,52 +604,97 @@
             line-height: 1.55;
         }
 
-        /* Layout */
+/* Layout */
 .layout {
     display: flex;
+    align-items: stretch;
+}
+
+/* Topbar alignment */
+.topbar-inner {
+    max-width: 1380px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: nowrap;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    flex: 1;
+}
+
+.brand-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.brand {
+    min-width: 0;
+}
+
+.brand h1,
+.brand p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-left: auto;
+}
+
+/* Toggle button */
+.toggle-btn {
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 6px;
+    margin: 0;
+    line-height: 1;
+    color: var(--text);
+    flex-shrink: 0;
 }
 
 /* Sidebar */
 .sidebar {
     width: 260px;
-    min-height: calc(100vh - 80px);
+    flex-shrink: 0;
+    min-height: calc(100vh - 85px);
     background: linear-gradient(180deg, #0f3b8f, #1d4ed8);
     color: white;
     padding: 20px;
     position: sticky;
-    top: 80px;
+    top: 85px;
     overflow-y: auto;
+    transition: width 0.3s ease, padding 0.3s ease;
 }
 
 .sidebar.collapsed {
     width: 70px;
+    padding: 20px 10px;
 }
 
 .sidebar.collapsed .sidebar-section {
     display: none;
 }
-/* Hide text when collapsed */
+
 .sidebar.collapsed a span {
     display: none;
-}
-
-/* Main content shift */
-.main-content {
-    margin-left: 260px;
-    transition: all 0.3s ease;
-}
-
-.main-content.expanded {
-    margin-left: 70px;
-}
-
-/* Toggle button */
-.toggle-btn {
-    font-size: 20px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    margin-right: 10px;
 }
 
 .sidebar-group {
@@ -677,9 +723,18 @@
     background: rgba(255,255,255,0.2);
 }
 
-/* Main */
+/* Main content */
 .main-content {
     flex: 1;
+    min-width: 0;
+    margin-left: 0;
+    transition: all 0.3s ease;
+}
+
+.container {
+    max-width: 1380px;
+    margin: 0 auto;
+    padding: 28px 24px 40px;
 }
 
         @media (max-width: 1050px) {
@@ -695,35 +750,64 @@
         }
 
         @media (max-width: 768px) {
-            .topbar-inner {
-                align-items: flex-start;
-            }
+    .topbar-inner {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
 
-            .container {
-                padding: 20px 14px 32px;
-            }
+    .topbar-left {
+        width: 100%;
+    }
 
-            .hero {
-                padding: 22px;
-                border-radius: 20px;
-            }
+    .top-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-left: auto;
+    }
 
-            .page-title {
-                font-size: 24px;
-            }
+    .container {
+        padding: 20px 14px 32px;
+    }
 
-            .mini-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+    .hero {
+        padding: 22px;
+        border-radius: 20px;
+    }
+
+    .page-title {
+        font-size: 24px;
+    }
+
+    .mini-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        width: 70px;
+        padding: 20px 10px;
+    }
+
+    .sidebar .sidebar-section {
+        display: none;
+    }
+
+    .sidebar a span {
+        display: none;
+    }
+}
     </style>
 
     {% block extra_head %}{% endblock %}
 </head>
 <body>
     <div class="topbar">
-        <div class="topbar-inner">
-            <button id="sidebarToggle" class="toggle-btn">☰</button>
+    <div class="topbar-inner">
+        <div class="topbar-left">
+            <button id="sidebarToggle" class="toggle-btn" type="button">☰</button>
+
             <div class="brand-wrap">
                 <div class="brand-icon">P</div>
                 <div class="brand">
@@ -731,25 +815,25 @@
                     <p>Integrated care, appointments, records, pharmacy and staff operations</p>
                 </div>
             </div>
+        </div>
 
-            <div class="top-actions">
-                <span class="pill">
-                    Role: {{ session.get('role', 'GUEST') | replace('_', ' ') | title }}
-                </span>
-                <span class="pill">User: {{ session.get('username', 'Guest') }}</span>
+        <div class="top-actions">
+            <span class="pill">
+                Role: {{ session.get('role', 'GUEST') | replace('_', ' ') | title }}
+            </span>
+            <span class="pill">User: {{ session.get('username', 'Guest') }}</span>
 
-                <a class="btn btn-light" href="{{ url_for('home') }}">Dashboard</a>
-                <!-- <a class="btn btn-light" href="{{ url_for('read_bp.available_doctors') }}">Doctors</a> -->
+            <a class="btn btn-light" href="{{ url_for('home') }}">Dashboard</a>
 
-                {% if session.get('role') == 'GUEST' %}
-                    <a class="btn" href="{{ url_for('auth_bp.login') }}">Login</a>
-                    <a class="btn btn-green" href="{{ url_for('auth_bp.signup') }}">Sign Up</a>
-                {% else %}
-                    <a class="btn btn-red" href="{{ url_for('auth_bp.logout') }}">Logout</a>
-                {% endif %}
-            </div>
+            {% if session.get('role') == 'GUEST' %}
+                <a class="btn" href="{{ url_for('auth_bp.login') }}">Login</a>
+                <a class="btn btn-green" href="{{ url_for('auth_bp.signup') }}">Sign Up</a>
+            {% else %}
+                <a class="btn btn-red" href="{{ url_for('auth_bp.logout') }}">Logout</a>
+            {% endif %}
         </div>
     </div>
+</div>
 
     <div class="layout">
 

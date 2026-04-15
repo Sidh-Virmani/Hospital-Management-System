@@ -620,6 +620,37 @@
     overflow-y: auto;
 }
 
+.sidebar.collapsed {
+    width: 70px;
+}
+
+.sidebar.collapsed .sidebar-section {
+    display: none;
+}
+/* Hide text when collapsed */
+.sidebar.collapsed a span {
+    display: none;
+}
+
+/* Main content shift */
+.main-content {
+    margin-left: 260px;
+    transition: all 0.3s ease;
+}
+
+.main-content.expanded {
+    margin-left: 70px;
+}
+
+/* Toggle button */
+.toggle-btn {
+    font-size: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
 .sidebar-group {
     margin-bottom: 20px;
 }
@@ -692,6 +723,7 @@
 <body>
     <div class="topbar">
         <div class="topbar-inner">
+            <button id="sidebarToggle" class="toggle-btn">☰</button>
             <div class="brand-wrap">
                 <div class="brand-icon">P</div>
                 <div class="brand">
@@ -731,8 +763,8 @@
 
                     {% for action in section.actions %}
                         <a href="{{ url_for(action.endpoint) }}">
-                            {{ action.label }}
-                        </a>
+    <span>{{ action.label }}</span>
+</a>
                     {% endfor %}
                 </div>
             {% endfor %}
@@ -753,5 +785,12 @@
 </div>
 
     {% block extra_scripts %}{% endblock %}
+
+    <script>
+document.getElementById("sidebarToggle").addEventListener("click", function () {
+    document.querySelector(".sidebar").classList.toggle("collapsed");
+    document.querySelector(".main-content").classList.toggle("expanded");
+});
+</script>
 </body>
 </html>

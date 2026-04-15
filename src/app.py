@@ -9,6 +9,10 @@ from .routes.routes_actions import actions_bp
 from .routes.routes_chat import chat_bp
 
 app = Flask(__name__)
+@app.context_processor
+def inject_sidebar():
+    role = session.get("role", "GUEST")
+    return dict(sections=get_dashboard_sections(role))
 app.secret_key = "hospital_project_secret_key"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -26,6 +30,5 @@ app.register_blueprint(chat_bp)
 
 @app.route("/")
 def home():
-    ensure_session()
-    sections = get_dashboard_sections(session["role"])
-    return render_template("home.html", sections=sections)
+     ensure_session()
+     return render_template("home.html")

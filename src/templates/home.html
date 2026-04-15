@@ -171,12 +171,16 @@
 <div class="grid grid-4" style="margin-top: 18px; margin-bottom: 26px;">
     <div class="stat-card">
         <div class="stat-label">Current Role</div>
-        <div class="stat-value">{{ session.get('role', 'GUEST') }}</div>
+        <div class="stat-value">
+            {{ session.get('role', 'GUEST') | replace('_', ' ') | title }}
+        </div>
     </div>
 
     <div class="stat-card">
         <div class="stat-label">Session User</div>
-        <div class="stat-value" style="font-size:22px;">{{ session.get('username', 'Guest') }}</div>
+       <div class="stat-value" style="font-size:22px;">
+            {{ session.get('username', 'Guest') | replace('_', ' ') | title }}
+        </div>
     </div>
 
     <div class="stat-card">

@@ -235,9 +235,10 @@
 
         .stat-value {
             margin-top: 10px;
-            font-size: 28px;
+            font-size: 26px;
             font-weight: bold;
-            color: var(--text);
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         .status-dot {
@@ -700,7 +701,9 @@
             </div>
 
             <div class="top-actions">
-                <span class="pill">Role: {{ session.get('role', 'GUEST') }}</span>
+                <span class="pill">
+                    Role: {{ session.get('role', 'GUEST') | replace('_', ' ') | title }}
+                </span>
                 <span class="pill">User: {{ session.get('username', 'Guest') }}</span>
 
                 <a class="btn btn-light" href="{{ url_for('home') }}">Dashboard</a>

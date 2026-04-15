@@ -45,16 +45,15 @@
     <div class="card">
         <h3>Quick Demo Access</h3>
         <p class="muted">
-            This is useful during live presentation when you want to switch roles quickly and show
-            different dashboards without typing credentials every time.
+            Select a role to continue
         </p>
 
         <div class="btn-row">
             <a class="btn" href="{{ url_for('auth_bp.demo_login', role='ADMIN') }}">Demo Admin</a>
             <a class="btn" href="{{ url_for('auth_bp.demo_login', role='PATIENT') }}">Demo Patient</a>
             <a class="btn" href="{{ url_for('auth_bp.demo_login', role='MEDICAL_STAFF') }}">Demo Medical Staff</a>
-            <a class="btn btn-secondary" href="{{ url_for('auth_bp.demo_login', role='NON_MEDICAL_STAFF') }}">Demo Non-Medical Staff</a>
-            <a class="btn btn-light" href="{{ url_for('auth_bp.demo_login', role='GUEST') }}">Continue as Guest</a>
+            <a class="btn" href="{{ url_for('auth_bp.demo_login', role='NON_MEDICAL_STAFF') }}">Demo Non-Medical Staff</a>
+            <a class="btn" href="{{ url_for('auth_bp.demo_login', role='GUEST') }}">Continue as Guest</a>
         </div>
 
         <div class="section">

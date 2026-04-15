@@ -707,7 +707,7 @@
                 <span class="pill">User: {{ session.get('username', 'Guest') }}</span>
 
                 <a class="btn btn-light" href="{{ url_for('home') }}">Dashboard</a>
-                <a class="btn btn-light" href="{{ url_for('read_bp.available_doctors') }}">Doctors</a>
+                <!-- <a class="btn btn-light" href="{{ url_for('read_bp.available_doctors') }}">Doctors</a> -->
 
                 {% if session.get('role') == 'GUEST' %}
                     <a class="btn" href="{{ url_for('auth_bp.login') }}">Login</a>

@@ -434,9 +434,18 @@ def update_medicine_stock():
 @actions_bp.route("/update_doctor_availability", methods=["GET", "POST"])
 @role_required("MEDICAL_STAFF")
 def update_doctor_availability():
+
+    role = session.get("role")
+    doctor_id = session.get("doctor_id")
+
     if request.method == "POST":
         try:
-            doctor_id = request.form["doctor_id"]
+          
+            if session.get("doctor_id"):
+                selected_doctor_id = doctor_id
+            else:
+                selected_doctor_id = request.form["doctor_id"]
+
             availability_status = request.form["availability_status"]
 
             run_action_query(
@@ -445,26 +454,53 @@ def update_doctor_availability():
                 SET availability_status = %s
                 WHERE doctor_id = %s
                 """,
-                (availability_status, doctor_id)
+                (availability_status, selected_doctor_id)
             )
 
-            return render_message("Doctor Availability Updated", "Doctor availability updated successfully.", "success")
+            return render_message(
+                "Doctor Availability Updated",
+                "Availability updated successfully.",
+                "success"
+            )
+
         except Exception as e:
             return render_message("Update Failed", str(e), "error")
 
-    fields = [
-        {"name": "doctor_id", "label": "Doctor", "type": "select", "required": True, "options": get_all_doctor_options()},
-        {
-            "name": "availability_status",
-            "label": "New Availability Status",
+ 
+    fields = []
+
+    if session.get("doctor_id"):
+        fields.append({
+            "name": "doctor_note",
+            "label": "Doctor",
+            "type": "readonly_text",
+            "value": f"Updating your own availability (Doctor ID: {doctor_id})"
+        })
+    else:
+        fields.append({
+            "name": "doctor_id",
+            "label": "Doctor",
             "type": "select",
             "required": True,
-            "options": [
-                {"value": "AVAILABLE", "label": "AVAILABLE"},
-                {"value": "BUSY", "label": "BUSY"},
-                {"value": "ON LEAVE", "label": "ON LEAVE"},
-                {"value": "OFF DUTY", "label": "OFF DUTY"}
-            ]
-        }
-    ]
-    return render_template("form.html", title="Update Doctor Availability", fields=fields, submit_label="Update Availability")
+            "options": get_all_doctor_options()
+        })
+
+    fields.append({
+        "name": "availability_status",
+        "label": "New Availability Status",
+        "type": "select",
+        "required": True,
+        "options": [
+            {"value": "AVAILABLE", "label": "AVAILABLE"},
+            {"value": "BUSY", "label": "BUSY"},
+            {"value": "ON LEAVE", "label": "ON LEAVE"},
+            {"value": "OFF DUTY", "label": "OFF DUTY"}
+        ]
+    })
+
+    return render_template(
+        "form.html",
+        title="Update Doctor Availability",
+        fields=fields,
+        submit_label="Update Availability"
+    )

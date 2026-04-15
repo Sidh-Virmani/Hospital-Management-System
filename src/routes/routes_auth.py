@@ -26,6 +26,19 @@ def login():
             return render_template("login.html", error="Invalid username or password.")
 
         set_logged_in_user(user)
+
+        if user["role"] == "MEDICAL_STAFF":
+            doctor = fetch_one(
+                """
+                SELECT d.doctor_id
+                FROM doctors d
+                JOIN medical_staff ms ON d.staff_id = ms.staff_id
+                WHERE ms.user_id = %s
+                """,
+                (user["user_id"],)
+            )
+            if doctor:
+                session["doctor_id"] = doctor["doctor_id"]
         return redirect(url_for("home"))
 
     return render_template("login.html")
